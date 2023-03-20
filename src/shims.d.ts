@@ -16,3 +16,4 @@ declare module '*.vue' {
 }
 declare module "view-ui-plus/dist/locale/*"
 declare module "pro_iview_v3/lib/locales/*"
+declare module "lodash-es"
