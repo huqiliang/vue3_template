@@ -13,6 +13,7 @@ import Inspect from 'vite-plugin-inspect'
 import Inspector from 'vite-plugin-vue-inspector'
 import Unocss from 'unocss/vite'
 import VueMacros from 'unplugin-vue-macros/vite'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 
 export default defineConfig({
   resolve: {
@@ -32,7 +33,7 @@ export default defineConfig({
         }),
       },
     }),
-
+    vueJsx(),
     // https://github.com/hannoeru/vite-plugin-pages
     Pages({
       extensions: ['vue', 'md'],

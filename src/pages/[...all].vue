@@ -11,4 +11,5 @@ const { t } = useI18n()
 <route lang="yaml">
 meta:
   layout: 404
+  title: 全局错误页面
 </route>

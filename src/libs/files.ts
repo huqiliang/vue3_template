@@ -7,17 +7,18 @@ export const filePathsToTree = <Data>(paths: Object[], getData?: (node: Array<Da
   const results: Array<Data>[] = []
 
   return paths.reduce((currentResults, currentPath: any) => {
+    const { meta, path: myPath } = currentPath
     const pathParts = currentPath.name.split(sep)
     const byPath: Record<string, Array<Data>> = {}
-
     pathParts.reduce((nodes: any, name: string, index: number, arr: any) => {
       let node: any | undefined = nodes.find((node: any) => node.name === name)
-      const path = arr.slice(0, index + 1).join('/')
+      const path = name === 'index' ? '' : arr.slice(0, index + 1).join('/')
 
       if (!node) {
         node = {
           name,
-          path: `/${path}`,
+          path: name === 'index' ? '/' : `/${path}`,
+          title: ((`/${path}` === myPath) && meta) ? meta.title : '',
           children: [],
         }
 

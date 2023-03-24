@@ -12,12 +12,12 @@ const { menuList } = props
       <Submenu v-if="item.children && item.children.length > 0" :name="item.path">
         <template #title>
           <Icon type="ios-filing" />
-          {{ item.name }}
+          {{ item.title || item.name }}
         </template>
         <InfiniteMenu :menu-list="item.children" />
       </Submenu>
       <menu-item v-else :name="item.path" :to="item.path">
-        {{ item.name }}
+        {{ item.title || item.name }}
       </menu-item>
     </template>
   </Menu>

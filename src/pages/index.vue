@@ -16,7 +16,7 @@ defineOptions({
 
 <template>
   <div>
-    <ProTable />
+    首页
     <!-- <div text-4xl>
       <div i-carbon-campsite inline-block />
     </div>
@@ -47,4 +47,5 @@ defineOptions({
 <route lang="yaml">
 meta:
   layout: local
+  title: 首页
 </route>
