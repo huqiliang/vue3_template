@@ -1,10 +1,14 @@
 {
-  "language":"中文",
   "button": {
     "go": "开始"
+  },
+  "example": {
+    "createUser": "创建人",
+    "is": "是否"
   },
   "intro": {
     "desc": "简介",
     "whats-your-name": "aa"
-  }
+  },
+  "language": "中文"
 }

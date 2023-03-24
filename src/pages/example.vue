@@ -4,8 +4,14 @@ export default {
   data() {
     return {
       datas: [],
-      config: {
-        search: { searchLineNum: 3, value: { createUser3: 'gg' } },
+      count: 0,
+
+    }
+  },
+  computed: {
+    config() {
+      return {
+        search: { searchLineNum: 3, value: { descript: 'gg' } },
         form: {
           labelPosition: 'right',
           formLineNum: 3,
@@ -85,8 +91,8 @@ export default {
         },
         columns: [
           {
-            title: '是否',
-            group: 'B',
+            title: this.$t('example.is'),
+            group: '分组A',
             key: 'cataLog',
             disabled: true,
             renderSearch: {
@@ -115,7 +121,8 @@ export default {
             },
           },
           {
-            title: '创建人',
+            title: this.$t('example.createUser'),
+            group: '分组B',
             key: 'createUser',
             renderSearch: ({ value, input }) => {
               return (
@@ -127,6 +134,7 @@ export default {
           },
           {
             title: '长度',
+            group: '分组A',
             disabled: true,
             renderSearch: {
               type: 'Slider',
@@ -203,7 +211,7 @@ export default {
             key: 'createUs3er4',
           },
           {
-            title: '关键字',
+            title: '简介',
             tooltip: true,
             tooltipMaxWidth: 700,
             key: 'descript',
@@ -316,8 +324,8 @@ export default {
           message: 'message',
         },
         submitForm: 'http://192.168.0.38:3000/mock/106/api/test',
-      },
-    }
+      }
+    },
   },
   async mounted() {
     // const res = await this.$http.get(
@@ -349,7 +357,7 @@ export default {
       this.datas[0].createUser = `修改数据 ${this.count++}`
     },
     changeSearchFresh() {
-      this.search.value.createUser3 = '123'
+      this.config.search.value.descript = '123'
       this.$refs.table.fetch()
       // this.toolBar = false;
       // this.$set(this.data, 0, {
@@ -375,13 +383,23 @@ export default {
       </div>
       <div>
         <Button @click="changeSearchFresh">
-          修改搜索数据并刷新表格
+          修改简介并刷新表格
         </Button>
       </div>
     </div>
     <div flex items-center mt-2>
       <div mr2>
         表格相关:
+      </div>
+      <div>
+        <Button @click="changeTableData">
+          修改表格数据
+        </Button>
+      </div>
+    </div>
+    <div flex items-center mt-2>
+      <div mr2>
+        表单相关:
       </div>
       <div>
         <Button @click="changeTableData">
