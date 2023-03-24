@@ -14,8 +14,20 @@ import Inspector from 'vite-plugin-vue-inspector'
 import Unocss from 'unocss/vite'
 import VueMacros from 'unplugin-vue-macros/vite'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import pkg from './package.json'
 
 export default defineConfig({
+  base: `${pkg.name}`,
+  envDir: 'env',
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://192.168.0.137:8890/',
+        changeOrigin: true,
+        rewrite: (path: any) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
   resolve: {
     alias: {
       '~/': `${path.resolve(__dirname, 'src')}/`,
@@ -117,7 +129,15 @@ export default defineConfig({
       toggleButtonVisibility: 'never',
     }),
   ],
-
+  build: {
+    terserOptions: {
+      compress: {
+        // 生产环境时移除console
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+  },
   // https://github.com/vitest-dev/vitest
   test: {
     include: ['test/**/*.test.ts'],

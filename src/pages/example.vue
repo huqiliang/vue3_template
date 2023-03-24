@@ -3,101 +3,107 @@ export default {
   name: 'Example',
   data() {
     return {
-      pageSize: 30,
-      count: 0,
-      hide: { table: false },
-      toolBarActions: [
-        'new',
-        {
-          key: 'test',
-          renderItem() {
-            return (
+      datas: [],
+      config: {
+        search: { searchLineNum: 3, value: { createUser3: 'gg' } },
+        form: {
+          labelPosition: 'right',
+          formLineNum: 3,
+          modalWidth: 70,
+          value: { createUser10: 'gg' },
+        },
+        table: {
+          onOnRowDblclick: this.tableRowClick,
+        },
+        pageSize: 30,
+        count: 0,
+        hide: { table: false },
+        toolBarActions: [
+          'new',
+          {
+            key: 'test',
+            renderItem() {
+              return (
               <Button
                 type="primary"
                 onclick={() => {
-                  console.log('自定义按钮')
+                  this.$Message.info('自定义按钮操作')
                 }}
               >
-                编辑
+                自定义
               </Button>
-            )
+              )
+            },
           },
-        },
-        'refresh',
-        'rowSetting',
-      ],
-      search: { searchLineNum: 3, value: { createUser3: 'gg' } },
-      form: {
-        labelPosition: 'right',
-        formLineNum: 3,
-        modalWidth: 70,
-        value: { createUser10: 'gg' },
-      },
-      datas: [],
-      cascader_data: [
-        {
-          value: 'beijing',
-          label: '北京',
-          children: [
-            {
-              value: 'gugong',
-              label: '故宫',
-            },
-            {
-              value: 'tiantan',
-              label: '天坛',
-            },
-            {
-              value: 'wangfujing',
-              label: '王府井',
-            },
-          ],
-        },
-      ],
-      toolBar: true,
-      autoData: {
-        columns: [
+          'fullscreen',
+          'refresh',
+          'rowSetting',
+        ],
+
+        cascader_data: [
           {
-            title: '标题',
-            key: 'toolBar',
-            type: 'radio',
-            props: {
-              value: true,
-            },
+            value: 'beijing',
+            label: '北京',
+            children: [
+              {
+                value: 'gugong',
+                label: '故宫',
+              },
+              {
+                value: 'tiantan',
+                label: '天坛',
+              },
+              {
+                value: 'wangfujing',
+                label: '王府井',
+              },
+            ],
           },
         ],
-        value: {
-          toolBar: false,
+        toolBar: true,
+        autoData: {
+          columns: [
+            {
+              title: '标题',
+              key: 'toolBar',
+              type: 'radio',
+              props: {
+                value: true,
+              },
+            },
+          ],
+          value: {
+            toolBar: false,
+          },
         },
-      },
-      format: {
+        format: {
         // formatCurrent({ page }) {
         //   const { current, pageSize } = page;
         //   return { ...page, current: (current - 1) * pageSize };
         // }
-        formatCurrent: '(page.current - 1) * page.pageSize',
-      },
-      columns: [
-        {
-          title: '是否',
-          group: 'B',
-          key: 'cataLog',
-          disabled: true,
-          renderSearch: {
-            type: 'Radio',
-          },
-          renderForm: {
-            type: 'DatePicker',
-            props: {
-              placeholder: 'lastDate',
-              format: 'yyyy-MM-dd hh:mm:ss',
+          formatCurrent: '(page.current - 1) * page.pageSize',
+        },
+        columns: [
+          {
+            title: '是否',
+            group: 'B',
+            key: 'cataLog',
+            disabled: true,
+            renderSearch: {
+              type: 'Radio',
             },
-            format(value) {
-              return value ? dayjs(value).format('YYYY-MM-DD hh:mm:ss') : ''
+            renderForm: {
+              type: 'DatePicker',
+              props: {
+                placeholder: 'lastDate',
+                format: 'yyyy-MM-dd hh:mm:ss',
+              },
+              format(value) {
+                return value ? dayjs(value).format('YYYY-MM-DD hh:mm:ss') : ''
+              },
             },
-          },
-          renderTable: () => {
-            return (
+            renderTable: () => {
+              return (
               <Button
                 onclick={() => {
                   console.log('aaa')
@@ -105,137 +111,125 @@ export default {
               >
                 aaa
               </Button>
-            )
+              )
+            },
           },
-        },
-        {
-          title: '创建人',
-          key: 'createUser',
-          renderSearch: ({ value, input }) => {
-            return (
+          {
+            title: '创建人',
+            key: 'createUser',
+            renderSearch: ({ value, input }) => {
+              return (
               <Select value={value} oninput={input} clearable>
                 <Option value="1">1</Option>
               </Select>
-            )
-          },
-        },
-        {
-          title: '长度',
-          disabled: true,
-          renderSearch: {
-            type: 'Slider',
-          },
-          renderForm: {
-            type: 'DatePicker',
-            style: {
-              width: '100%',
+              )
             },
           },
-          renderTable: (h, params) => {
-            return <span>{params.row.isAllow === 'F' ? '黑名单' : '白名单'}</span>
-          },
-          key: 'createUser2',
-        },
-        {
-          title: '数字',
-          renderSearch: {
-            type: 'InputNumber',
-          },
-          renderForm: {
-            type: 'i-switch',
-          },
-          key: 'createUser8',
-        },
-        {
-          title: '城市',
-          notShowTable: true,
-          renderForm: {
-            type: 'Select',
-            children: [],
-          },
-          renderSearch: ({ value, input }) => {
-            return <Cascader value={value || []} onInput={input} data={this.cascader_data} clearable></Cascader>
-          },
-          key: 'createUser4',
-        },
-        {
-          title: 'creat4',
-          notShowTable: true,
-          notShowSearch: true,
-          rules: [
-            {
-              required: true,
-              message: 'creat4不能为空',
+          {
+            title: '长度',
+            disabled: true,
+            renderSearch: {
+              type: 'Slider',
             },
-          ],
-          renderForm: {
-            type: 'Cascader',
-            props: {
-              value: [],
-              data: [
-                {
-                  value: 'beijing',
-                  label: '北京',
-                  children: [
-                    {
-                      value: 'gugong',
-                      label: '故宫',
-                    },
-                    {
-                      value: 'tiantan',
-                      label: '天坛',
-                    },
-                    {
-                      value: 'wangfujing',
-                      label: '王府井',
-                    },
-                  ],
-                },
-              ],
+            renderForm: {
+              type: 'DatePicker',
+              style: {
+                width: '100%',
+              },
             },
-          },
-          key: 'createUs3er4',
-        },
-        {
-          title: '关键字',
-          tooltip: true,
-          tooltipMaxWidth: 700,
-          key: 'descript',
-          renderTable: {
-            type: 'span',
-            useExp: true,
-            text: 'value===200?\'成功\':\'失败\';console.log(value);',
-            style: {
-              color: 'value==200?\'#19be6b\':\'#ed4014\'',
+            renderTable: (h, params) => {
+              return <span>{params.row.isAllow === 'F' ? '黑名单' : '白名单'}</span>
             },
+            key: 'createUser2',
           },
-          renderForm: {
-            type: 'i-input',
-            props: {
-              type: 'textarea',
-              rows: 4,
+          {
+            title: '数字',
+            renderSearch: {
+              type: 'InputNumber',
             },
+            renderForm: {
+              type: 'i-switch',
+            },
+            key: 'createUser8',
           },
-          // renderForm() {
-          //   return (
-          //     <Input
-          //       maxlength="100"
-          //       show-word-limit
-          //       type="textarea"
-          //       placeholder="Enter something..."
-          //       rows={4}
-          //     />
-          //   );
-          // },
-          formLineNum: 2,
-        },
-        {
-          title: '百分比',
-          key: 'percent',
-          notShowSearch: true,
-          renderTable({ row }) {
-            console.log(row)
-            return (
+          {
+            title: '城市',
+            notShowTable: true,
+            renderForm: {
+              type: 'Select',
+              children: [],
+            },
+            renderSearch: ({ value, input }) => {
+              return <Cascader value={value || []} onInput={input} data={this.cascader_data} clearable></Cascader>
+            },
+            key: 'createUser4',
+          },
+          {
+            title: 'creat4',
+            notShowTable: true,
+            notShowSearch: true,
+            rules: [
+              {
+                required: true,
+                message: 'creat4不能为空',
+              },
+            ],
+            renderForm: {
+              type: 'Cascader',
+              props: {
+                value: [],
+                data: [
+                  {
+                    value: 'beijing',
+                    label: '北京',
+                    children: [
+                      {
+                        value: 'gugong',
+                        label: '故宫',
+                      },
+                      {
+                        value: 'tiantan',
+                        label: '天坛',
+                      },
+                      {
+                        value: 'wangfujing',
+                        label: '王府井',
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+            key: 'createUs3er4',
+          },
+          {
+            title: '关键字',
+            tooltip: true,
+            tooltipMaxWidth: 700,
+            key: 'descript',
+            renderTable: {
+              type: 'span',
+              useExp: true,
+              text: 'value===200?\'成功\':\'失败\';console.log(value);',
+              style: {
+                color: 'value==200?\'#19be6b\':\'#ed4014\'',
+              },
+            },
+            renderForm: {
+              type: 'i-input',
+              props: {
+                type: 'textarea',
+                rows: 4,
+              },
+            },
+            formLineNum: 2,
+          },
+          {
+            title: '百分比',
+            key: 'percent',
+            notShowSearch: true,
+            renderTable({ row }) {
+              return (
               <div class="p-5">
                 <Circle percent={row.percent} size={80}>
                   <span class="demo-Circle-inner" style="font-size:14px">
@@ -243,36 +237,36 @@ export default {
                   </span>
                 </Circle>
               </div>
-            )
+              )
+            },
           },
-        },
-        {
-          title: '操作',
-          key: 'action',
-          actions: [
-            {
-              type: 'edit',
-              title: '编辑2',
-              request: '/api/users/${cataLog}',
-              method: 'PUT',
-            },
-            {
-              title: '新增',
-              type: 'new',
-            },
-            {
-              title: '测试',
-              action(params) {
-                console.log('====================================')
-                console.log(params)
-                console.log('====================================')
+          {
+            title: '操作',
+            key: 'action',
+            actions: [
+              {
+                type: 'edit',
+                title: '编辑2',
+                request: '/api/users/${cataLog}',
+                method: 'PUT',
               },
-            },
-            {
-              title: '编辑',
-              method: 'POST',
-              type: 'edit',
-              request: 'http://192.168.0.38:3000/mock/106/api/test',
+              {
+                title: '新增',
+                type: 'new',
+              },
+              {
+                title: '测试',
+                action(params) {
+                  console.log('====================================')
+                  console.log(params)
+                  console.log('====================================')
+                },
+              },
+              {
+                title: '编辑',
+                method: 'POST',
+                type: 'edit',
+                request: 'http://192.168.0.38:3000/mock/106/api/test',
               // request(options) {
               //   console.log(options);
               //   return axios.post(
@@ -282,13 +276,20 @@ export default {
               //     }
               //   );
               // }
-            },
-            {
-              type: 'delete',
-              title: '删除',
-              request: 'http://127.0.0.1:7068/api/v1/users/${id}',
-              method: 'DELETE',
-            },
+              },
+              {
+                type: 'delete',
+                title: '普通删除',
+                request: 'http://192.168.0.38:3000/mock/106/api/table/',
+                method: 'DELETE',
+              },
+
+              {
+                type: 'delete',
+                title: '带参删除',
+                request: 'http://192.168.0.38:3000/mock/106/api/table/${id}',
+                method: 'DELETE',
+              },
             // {
             //   title: "删除",
             //   type: "delete",
@@ -296,25 +297,26 @@ export default {
             //   // request: "/id",
             //   keys: ["id"]
             // }
-          ],
+            ],
+          },
+        ],
+        request: 'http://192.168.0.38:3000/mock/106/api/table',
+        // request(options) {
+        //   // console.log(options);
+        //   return axios.get("http://192.168.0.38:3000/mock/106/api/table", {
+        //     headers: {
+        //       nomsg: true
+        //     },
+        //     params: { ...options }
+        //   });
+        // },
+        map: {
+          dataPath: 'data',
+          totalPath: 'totalRows',
+          message: 'message',
         },
-      ],
-      request: 'http://192.168.0.38:3000/mock/106/api/table',
-      // request(options) {
-      //   // console.log(options);
-      //   return axios.get("http://192.168.0.38:3000/mock/106/api/table", {
-      //     headers: {
-      //       nomsg: true
-      //     },
-      //     params: { ...options }
-      //   });
-      // },
-      map: {
-        dataPath: 'data',
-        totalPath: 'totalRows',
-        message: 'message',
+        submitForm: 'http://192.168.0.38:3000/mock/106/api/test',
       },
-      submitForm: 'http://192.168.0.38:3000/mock/106/api/test',
     }
   },
   async mounted() {
@@ -340,9 +342,8 @@ export default {
     // this.$success(res);
   },
   methods: {
-    searchReset(data) {},
-    tableAction() {
-      console.log('table click')
+    tableRowClick(row, index) {
+      this.$Message.info(`你双击了第 ${index} 行 百分比是 ${row.percent}`)
     },
     changeTableData() {
       this.datas[0].createUser = `修改数据 ${this.count++}`
@@ -358,6 +359,9 @@ export default {
     table() {
       const ref = this.$refs.proSearch
       console.log(ref.value)
+    },
+    searchReset() {
+      this.$Message.info('重置了')
     },
   },
 }
@@ -388,20 +392,7 @@ export default {
     <pro-table
       ref="table"
       v-model="datas"
-      :request="request"
-      :map="map"
-      :tool-bar="toolBar"
-      :columns="columns"
-      :search="search"
-      :submit-form="submitForm"
-      :format="format"
-      :form="form"
-      :auto-fetch="true"
-      :hide="hide"
-      :tool-bar-actions="toolBarActions"
-      :page-size="pageSize"
-      @search-reset="searchReset"
-      @on-row-click="tableAction"
+      v-bind="config"
     />
 
     <!-- <pro-table :columns="columns" :searchLineNum="5"> </pro-table> -->
