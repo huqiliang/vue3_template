@@ -347,16 +347,16 @@ export default {
     <div flex items-center>
       <div mr2>搜索相关:</div>
       <div>
-        <Button @click="changeSearchFresh" mr2> 修改简介并刷新表格 </Button>
+        <Button @click="changeSearchFresh" mr2> 修改搜索并刷新表格 </Button>
         <Button @click="searchHandle" mr2> 手动搜索 </Button>
-        <Button @click="searchReset"> 外部搜索重置 </Button>
+        <Button @click="searchReset"> 手动重置搜索 </Button>
       </div>
     </div>
     <div flex items-center mt-2>
       <div mr2>表格相关:</div>
       <div>
         <Button @click="changeTableData" mr2> 修改表格数据 </Button>
-        <Button @click="getDatas"> 获取所有数据数据 </Button>
+        <Button @click="getDatas"> 获取所有数据 </Button>
       </div>
     </div>
     <div flex items-center mt-2>
