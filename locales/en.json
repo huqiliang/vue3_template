@@ -10,5 +10,9 @@
     "desc": "desc",
     "whats-your-name": "zhang"
   },
-  "language": "英文"
+  "language": "英文",
+  "system": {
+    "back": "Go Back",
+    "home": "Go Home"
+  }
 }

@@ -347,7 +347,6 @@ export default {
   </div>
 </template>
 
-// 自动路由相关的信息可以在这里填写
 <route lang="yaml">
 meta:
   layout: local

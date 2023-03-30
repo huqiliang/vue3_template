@@ -18,7 +18,7 @@ export const filePathsToTree = <Data>(paths: Object[], getData?: (node: Array<Da
         node = {
           name,
           path: name === 'index' ? '/' : `/${path}`,
-          title: ((`/${path}` === myPath) && meta) ? meta.title : '',
+          title: ((`/${path}` === myPath || path==='all') && meta) ? meta.title : '',
           children: [],
         }
 
