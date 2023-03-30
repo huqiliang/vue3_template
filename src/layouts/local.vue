@@ -3,11 +3,12 @@ import { Message } from 'view-ui-plus'
 import axios from 'axios'
 import generatedRoutes from '~pages'
 import { filePathsToTree } from '~/libs/files'
+import { storeToRefs } from 'pinia'
 
-const { locale, t } = useI18n()
-const toggleLocales = () => {
-  locale.value = locale.value === 'zh' ? 'en' : 'zh'
-}
+const store = useLocaleStore()
+
+const { locale, localeArray } = storeToRefs(store)
+
 const page = reactive({ tips: false })
 
 const auth = async () => {
@@ -42,11 +43,11 @@ const routes: any = filePathsToTree(generatedRoutes)
         <InfiniteMenu :menu-list="routes" />
       </Sider>
       <Layout>
-        <Header class="layout-header-bar">
-          <Button class="mr5" type="success" @click="auth"> 授权 </Button>
-          <Button type="success" @click="toggleLocales()">
-            {{ t('example.language') }}
-          </Button>
+        <Header class="layout-header-bar flex items-center justify-between p5">
+          <div>
+            <Button class="mr5" type="success" @click="auth"> 授权 </Button>
+          </div>
+          <div style="width: 90px"><pro-select v-model="locale" :list="localeArray"></pro-select></div>
         </Header>
         <Content id="#app" p-5>
           <router-view />
