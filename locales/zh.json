@@ -1,6 +1,8 @@
 {
   "example": {
     "createUser": "创建人",
+    "custom": "自定义",
+    "descript": "简介",
     "is": "是否",
     "language": "中文"
   },

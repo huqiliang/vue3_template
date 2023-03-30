@@ -56,7 +56,7 @@ export default {
                     this.$Message.info('自定义按钮操作')
                   }}
                 >
-                  {this.$t('custom')}
+                  {this.$t('example.custom')}
                 </Button>
               )
             }
@@ -74,7 +74,7 @@ export default {
         },
         columns: [
           {
-            title: '简介',
+            title: this.$t('example.descript'),
             group: '分组A',
             tooltip: true,
             tooltipMaxWidth: 700,
@@ -258,7 +258,16 @@ export default {
                 }
               },
               {
-                title: '方法请求',
+                title: '手动打开编辑',
+                prevent: true,
+                action: params => {
+                  //可以修改数据后传入
+                  params.row.descript = 300
+                  this.$refs.table.typeAction({ type: 'edit' }, params)
+                }
+              },
+              {
+                title: '自定义请求',
                 method: 'POST',
                 type: 'edit',
                 request(options) {
@@ -316,6 +325,18 @@ export default {
     },
     searchReset() {
       this.$refs.table.searchReset()
+    },
+    openForm() {
+      this.$refs.table.typeAction({
+        type: 'new'
+      })
+    },
+    getDatas() {
+      const datas = this.$refs.table.getDatas()
+      console.log(datas)
+      this.$Message.info({
+        content: '请打开控制台查看打印数据'
+      })
     }
   }
 }
@@ -326,15 +347,22 @@ export default {
     <div flex items-center>
       <div mr2>搜索相关:</div>
       <div>
-        <Button @click="changeSearchFresh" class="mr2"> 修改简介并刷新表格 </Button>
-        <Button @click="searchHandle" class="mr2"> 手动搜索 </Button>
+        <Button @click="changeSearchFresh" mr2> 修改简介并刷新表格 </Button>
+        <Button @click="searchHandle" mr2> 手动搜索 </Button>
         <Button @click="searchReset"> 外部搜索重置 </Button>
       </div>
     </div>
     <div flex items-center mt-2>
       <div mr2>表格相关:</div>
       <div>
-        <Button @click="changeTableData"> 修改表格数据 </Button>
+        <Button @click="changeTableData" mr2> 修改表格数据 </Button>
+        <Button @click="getDatas"> 获取所有数据数据 </Button>
+      </div>
+    </div>
+    <div flex items-center mt-2>
+      <div mr2>表单相关:</div>
+      <div>
+        <Button @click="openForm">打开新建表单 </Button>
       </div>
     </div>
     <pro-table ref="table" v-model="datas" v-bind="config" :search="search" />

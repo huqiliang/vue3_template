@@ -1,6 +1,8 @@
 {
   "example": {
     "createUser": "createUser",
+    "custom": "Custom",
+    "descript": "descript",
     "is": "isTrue",
     "language": "英文"
   },
