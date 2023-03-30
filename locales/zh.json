@@ -1,16 +1,9 @@
 {
-  "button": {
-    "go": "开始"
-  },
   "example": {
     "createUser": "创建人",
-    "is": "是否"
+    "is": "是否",
+    "language": "中文"
   },
-  "intro": {
-    "desc": "简介",
-    "whats-your-name": "aa"
-  },
-  "language": "中文",
   "system": {
     "back": "返回上一页",
     "home": "返回首页"

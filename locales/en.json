@@ -1,16 +1,9 @@
 {
-  "button": {
-    "go": "go33"
-  },
   "example": {
     "createUser": "createUser",
-    "is": "isTrue"
+    "is": "isTrue",
+    "language": "英文"
   },
-  "intro": {
-    "desc": "desc",
-    "whats-your-name": "zhang"
-  },
-  "language": "英文",
   "system": {
     "back": "Go Back",
     "home": "Go Home"

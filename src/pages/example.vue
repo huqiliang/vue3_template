@@ -316,10 +316,6 @@ export default {
     },
     searchReset() {
       this.$refs.table.searchReset()
-    },
-    table() {
-      const ref = this.$refs.proSearch
-      console.log(ref.value)
     }
   }
 }
@@ -342,8 +338,6 @@ export default {
       </div>
     </div>
     <pro-table ref="table" v-model="datas" v-bind="config" :search="search" />
-
-    <!-- <pro-table :columns="columns" :searchLineNum="5"> </pro-table> -->
   </div>
 </template>
 
