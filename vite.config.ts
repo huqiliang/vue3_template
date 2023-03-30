@@ -17,7 +17,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import pkg from './package.json'
 
 export default defineConfig({
-  base: `${pkg.name}`,
+  base: `/${pkg.name}`,
   envDir: 'env',
   server: {
     proxy: {
@@ -56,18 +56,9 @@ export default defineConfig({
 
     // https://github.com/antfu/unplugin-auto-import
     AutoImport({
-      imports: [
-        'vue',
-        'vue-router',
-        'vue-i18n',
-        'vue/macros',
-        '@vueuse/head',
-        '@vueuse/core',
-      ],
+      imports: ['vue', 'vue-router', 'vue-i18n', 'vue/macros', '@vueuse/head', '@vueuse/core'],
       dts: 'src/auto-imports.d.ts',
-      dirs: [
-        'src/stores',
-      ],
+      dirs: ['src/stores'],
       vueTemplate: true,
     }),
 
@@ -129,6 +120,7 @@ export default defineConfig({
     }),
   ],
   build: {
+    minify: 'terser',
     terserOptions: {
       compress: {
         // 生产环境时移除console
@@ -150,7 +142,9 @@ export default defineConfig({
   ssgOptions: {
     script: 'async',
     formatting: 'minify',
-    onFinished() { generateSitemap() },
+    onFinished() {
+      generateSitemap()
+    },
   },
 
   ssr: {
