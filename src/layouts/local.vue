@@ -2,6 +2,7 @@
 import { Message } from 'view-ui-plus'
 import axios from 'axios'
 import { storeToRefs } from 'pinia'
+import { appCode } from '../../package.json'
 import generatedRoutes from '~pages'
 import { filePathsToTree } from '~/libs/files'
 
@@ -10,13 +11,25 @@ const store = useLocaleStore()
 const { locale, localeArray } = storeToRefs(store)
 
 const page = reactive({ tips: false })
+const menu: any = reactive({ mdoal: false })
+const columns = [
+  {
+    title: 'UC菜单',
+    key: 'name',
+    tree: true,
+  },
+]
+const menuDatas = ref([])
+// 获取路由树
+const routes: any = filePathsToTree(generatedRoutes)
 
+// UC授权
 const auth = async () => {
   const res: any = await axios({
     url: 'https://test.ihotel.cn/uc-web/sso/login',
     method: 'post',
     data: {
-      appCode: '',
+      appCode,
       orgCode: 'GCBZG',
       userCode: 'GCBZG_ADMIN',
       password: 'e10adc3949ba59abbe56e057f20f883e',
@@ -35,7 +48,19 @@ const auth = async () => {
     page.tips = true
   }
 }
-const routes: any = filePathsToTree(generatedRoutes)
+// 同步uc菜单树
+const asyncMenuTree = async () => {
+  menu.modal = true
+}
+onMounted(async () => {
+  const res: any = await axios({
+    url: 'https://test.ihotel.cn/uc-web/resource/list',
+    method: 'post',
+    data: { appCode, type: 'MENU', parentId: '-1' },
+  })
+  console.log(res)
+  menuDatas.value = res.retVal
+})
 </script>
 
 <template>
@@ -49,6 +74,9 @@ const routes: any = filePathsToTree(generatedRoutes)
           <div>
             <Button class="mr5" type="success" @click="auth">
               授权
+            </Button>
+            <Button class="mr5" type="primary" @click="asyncMenuTree">
+              菜单配置
             </Button>
           </div>
           <div style="width: 90px">
@@ -77,6 +105,9 @@ const routes: any = filePathsToTree(generatedRoutes)
           3.在当前 url 后加入 ?token=复制的值 , 刷新即可
         </p>
       </div>
+    </Modal>
+    <Modal v-model="menu.modal" title="菜单配置" :width="80">
+      <Table row-key="uuid" :border="true" :columns="columns" :data="menuDatas" />
     </Modal>
   </div>
 </template>

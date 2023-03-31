@@ -1,5 +1,6 @@
 {
-  "name":"example",
+  "name": "asdfin_front",
+  "appCode": "ASDFIN",
   "type": "module",
   "private": true,
   "packageManager": "pnpm@7.28.0",
