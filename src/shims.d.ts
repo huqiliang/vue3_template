@@ -14,6 +14,8 @@ declare module '*.vue' {
   const component: DefineComponent<{}, {}, any>
   export default component
 }
-declare module "view-ui-plus/dist/locale/*"
-declare module "pro_iview_v3/lib/locales/*"
-declare module "lodash-es"
+
+declare module 'unplugin-vue-macros/vite'
+declare module 'view-ui-plus/dist/locale/*'
+declare module 'pro_iview_v3/lib/locales/*'
+declare module 'lodash-es'
