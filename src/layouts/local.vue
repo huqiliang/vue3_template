@@ -133,7 +133,6 @@ onMounted(initMenus)
       <Button @click="getAllDatas">
         获取所有数据
       </Button>
-      {{ proTable }}
       <ProTable v-model="proTable" mt-2 :tool-bar-actions="['refresh']" :hide="{ search: true, page: true }" :table="{ rowKey: 'uuid' }" :border="true" :columns="columns" />
     </Modal>
   </div>

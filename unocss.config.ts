@@ -1,13 +1,4 @@
-import {
-  defineConfig,
-  presetAttributify,
-  presetIcons,
-  presetTypography,
-  presetUno,
-  presetWebFonts,
-  transformerDirectives,
-  transformerVariantGroup,
-} from 'unocss'
+import { defineConfig, presetAttributify, presetIcons, presetTypography, presetUno, presetWebFonts, transformerDirectives, transformerVariantGroup } from 'unocss'
 
 export default defineConfig({
   shortcuts: [
@@ -20,6 +11,7 @@ export default defineConfig({
     presetIcons({
       scale: 1.2,
       warn: true,
+      prefix: 'u-',
     }),
     presetTypography(),
     presetWebFonts({
@@ -30,9 +22,6 @@ export default defineConfig({
       },
     }),
   ],
-  transformers: [
-    transformerDirectives(),
-    transformerVariantGroup(),
-  ],
+  transformers: [transformerDirectives(), transformerVariantGroup()],
   safelist: 'prose prose-sm m-auto text-left'.split(' '),
 })

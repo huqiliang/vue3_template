@@ -6,6 +6,7 @@ defineOptions({
 
 <template>
   <div>首页</div>
+  <div u-carbon-align-vertical-bottom inline-block />
 </template>
 
 <route lang="yaml">
