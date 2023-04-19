@@ -1,5 +1,4 @@
 <script setup lang="tsx">
-import _ from 'lodash-es'
 import { Message } from 'view-ui-plus'
 import axios from 'axios'
 import { storeToRefs } from 'pinia'
@@ -7,37 +6,12 @@ import { appCode } from '../../package.json'
 import generatedRoutes from '~pages'
 import { filePathsToTree } from '~/libs/files'
 
-let proTable: any = reactive([])
 const store = useLocaleStore()
 
 const { locale, localeArray } = storeToRefs(store)
 
 const page = reactive({ tips: false })
-const menu: any = reactive({ modal: false })
-const columns = [
-  {
-    title: 'UC菜单',
-    key: 'name',
-    tree: true,
-  },
-  {
-    title: '路径',
-    key: 'link',
-    renderTable: {
-      type: 'i-input',
-    },
-  },
-  {
-    title: '本地匹配',
-    key: 'link',
-    renderTable(params: any) {
-      const hasPath = _.find(generatedRoutes, (o: any) => {
-        return params.row.link.split('#')[1] === o.path
-      })
-      return hasPath ? <span>{hasPath.meta.title}</span> : null
-    },
-  },
-]
+
 // 获取路由树
 const routes: any = filePathsToTree(generatedRoutes)
 
@@ -66,24 +40,6 @@ const auth = async () => {
     page.tips = true
   }
 }
-// 同步uc菜单树
-const asyncMenuTree = async () => {
-  menu.modal = true
-}
-
-const initMenus = async () => {
-  const res: any = await axios({
-    url: 'https://test.ihotel.cn/uc-web/resource/list',
-    method: 'post',
-    data: { appCode, type: 'MENU', parentId: '-1' },
-  })
-  proTable = res.retVal
-}
-const getAllDatas = () => {
-  const datas = proTable.value.getDatas()
-  console.log(datas)
-}
-onMounted(initMenus)
 </script>
 
 <template>
@@ -97,9 +53,6 @@ onMounted(initMenus)
           <div>
             <Button class="mr5" type="success" @click="auth">
               授权
-            </Button>
-            <Button class="mr5" type="primary" @click="asyncMenuTree">
-              菜单配置
             </Button>
           </div>
           <div style="width: 90px">
@@ -128,12 +81,6 @@ onMounted(initMenus)
           3.在当前 url 后加入 ?token=复制的值 , 刷新即可
         </p>
       </div>
-    </Modal>
-    <Modal v-model="menu.modal" title="菜单配置" :width="80">
-      <Button @click="getAllDatas">
-        获取所有数据
-      </Button>
-      <ProTable v-model="proTable" mt-2 :tool-bar-actions="['refresh']" :hide="{ search: true, page: true }" :table="{ rowKey: 'uuid' }" :border="true" :columns="columns" />
     </Modal>
   </div>
 </template>
