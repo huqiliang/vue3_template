@@ -11,6 +11,5 @@ defineOptions({
 
 <route lang="yaml">
 meta:
-  layout: local
   title: 首页
 </route>

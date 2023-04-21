@@ -30,6 +30,5 @@ const { VITE_BASE_URL, MODE } = import.meta.env
 
 <route lang="yaml">
 meta:
-  layout: local
   title: 信息页
 </route>

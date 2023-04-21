@@ -424,6 +424,5 @@ export default {
 
 <route lang="yaml">
 meta:
-  layout: local
   title: 示例代码
 </route>

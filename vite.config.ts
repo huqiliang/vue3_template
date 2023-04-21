@@ -16,139 +16,148 @@ import VueMacros from 'unplugin-vue-macros/vite'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import pkg from './package.json'
 
-export default defineConfig({
-  base: `/${pkg.name}`,
-  envDir: 'env',
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://192.168.0.137:8890/',
-        changeOrigin: true,
-        rewrite: (path: any) => path.replace(/^\/api/, ''),
+export default defineConfig(({ mode }) => {
+  const type: any = {
+    frame: '有框模式',
+  }
+  console.log(`当前启动的模式是:${type[mode] || mode}`)
+
+  return {
+    base: `/${pkg.name}`,
+    envDir: 'env',
+    server: {
+      proxy: {
+        '/api': {
+          target: 'http://192.168.0.137:8890/',
+          changeOrigin: true,
+          rewrite: (path: any) => path.replace(/^\/api/, ''),
+        },
       },
     },
-  },
-  resolve: {
-    alias: {
-      '~/': `${path.resolve(__dirname, 'src')}/`,
-    },
-  },
-
-  plugins: [
-    // Preview(),
-
-    VueMacros({
-      plugins: {
-        vue: Vue({
-          include: [/\.vue$/, /\.md$/],
-          reactivityTransform: true,
-        }),
-      },
-    }),
-    vueJsx(),
-    // https://github.com/hannoeru/vite-plugin-pages
-    Pages({
-      extensions: ['vue', 'md'],
-    }),
-
-    // https://github.com/JohnCampionJr/vite-plugin-vue-layouts
-    Layouts(),
-
-    // https://github.com/antfu/unplugin-auto-import
-    AutoImport({
-      imports: ['vue', 'vue-router', 'vue-i18n', 'vue/macros', '@vueuse/head', '@vueuse/core'],
-      dts: 'src/auto-imports.d.ts',
-      dirs: ['src/stores'],
-      vueTemplate: true,
-    }),
-
-    // https://github.com/antfu/unplugin-vue-components
-    Components({
-      extensions: ['vue'],
-      include: [/\.vue$/, /\.vue\?vue/],
-      dts: 'src/components.d.ts',
-    }),
-
-    // https://github.com/antfu/unocss
-    // see unocss.config.ts for config
-    Unocss(),
-
-    // https://github.com/antfu/vite-plugin-pwa
-    VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'safari-pinned-tab.svg'],
-      manifest: {
-        name: 'Vitesse',
-        short_name: 'Vitesse',
-        theme_color: '#ffffff',
-        icons: [
-          {
-            src: '/pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: '/pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-          },
-          {
-            src: '/pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any maskable',
-          },
-        ],
-      },
-    }),
-
-    // https://github.com/intlify/bundle-tools/tree/main/packages/unplugin-vue-i18n
-    VueI18n({
-      runtimeOnly: true,
-      compositionOnly: true,
-      fullInstall: true,
-      include: [path.resolve(__dirname, 'locales/**')],
-    }),
-
-    // https://github.com/antfu/vite-plugin-inspect
-    // Visit http://localhost:3333/__inspect/ to see the inspector
-    Inspect(),
-
-    // https://github.com/webfansplz/vite-plugin-vue-inspector
-    Inspector({
-      toggleButtonVisibility: 'never',
-    }),
-  ],
-  build: {
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        // 生产环境时移除console
-        drop_console: true,
-        drop_debugger: true,
+    resolve: {
+      alias: {
+        '~/': `${path.resolve(__dirname, 'src')}/`,
       },
     },
-  },
-  // https://github.com/vitest-dev/vitest
-  test: {
-    include: ['test/**/*.test.ts'],
-    environment: 'jsdom',
-    deps: {
-      inline: ['@vue', '@vueuse', 'vue-demi'],
-    },
-  },
 
-  // https://github.com/antfu/vite-ssg
-  ssgOptions: {
-    script: 'async',
-    formatting: 'minify',
-    onFinished() {
-      generateSitemap()
-    },
-  },
+    plugins: [
+      // Preview(),
 
-  ssr: {
-    // TODO: workaround until they support native ESM
-    noExternal: ['workbox-window', /vue-i18n/],
-  },
+      VueMacros({
+        plugins: {
+          vue: Vue({
+            include: [/\.vue$/, /\.md$/],
+            reactivityTransform: true,
+          }),
+        },
+      }),
+      vueJsx(),
+      // https://github.com/hannoeru/vite-plugin-pages
+      Pages({
+        extensions: ['vue', 'md'],
+      }),
+
+      // https://github.com/JohnCampionJr/vite-plugin-vue-layouts
+      Layouts({
+        defaultLayout: mode === 'frame' ? 'local' : 'default',
+      }),
+
+      // https://github.com/antfu/unplugin-auto-import
+      AutoImport({
+        imports: ['vue', 'vue-router', 'vue-i18n', 'vue/macros', '@vueuse/head', '@vueuse/core'],
+        dts: 'src/auto-imports.d.ts',
+        dirs: ['src/stores'],
+        vueTemplate: true,
+      }),
+
+      // https://github.com/antfu/unplugin-vue-components
+      Components({
+        extensions: ['vue'],
+        include: [/\.vue$/, /\.vue\?vue/],
+        dts: 'src/components.d.ts',
+      }),
+
+      // https://github.com/antfu/unocss
+      // see unocss.config.ts for config
+      Unocss(),
+
+      // https://github.com/antfu/vite-plugin-pwa
+      VitePWA({
+        registerType: 'autoUpdate',
+        includeAssets: ['favicon.svg', 'safari-pinned-tab.svg'],
+        manifest: {
+          name: 'Vitesse',
+          short_name: 'Vitesse',
+          theme_color: '#ffffff',
+          icons: [
+            {
+              src: '/pwa-192x192.png',
+              sizes: '192x192',
+              type: 'image/png',
+            },
+            {
+              src: '/pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+            },
+            {
+              src: '/pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'any maskable',
+            },
+          ],
+        },
+      }),
+
+      // https://github.com/intlify/bundle-tools/tree/main/packages/unplugin-vue-i18n
+      VueI18n({
+        runtimeOnly: true,
+        compositionOnly: true,
+        fullInstall: true,
+        include: [path.resolve(__dirname, 'locales/**')],
+      }),
+
+      // https://github.com/antfu/vite-plugin-inspect
+      // Visit http://localhost:3333/__inspect/ to see the inspector
+      Inspect(),
+
+      // https://github.com/webfansplz/vite-plugin-vue-inspector
+      Inspector({
+        toggleButtonVisibility: 'never',
+      }),
+    ],
+    build: {
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          // 生产环境时移除console
+          drop_console: true,
+          drop_debugger: true,
+        },
+      },
+    },
+    // https://github.com/vitest-dev/vitest
+    test: {
+      include: ['test/**/*.test.ts'],
+      environment: 'jsdom',
+      deps: {
+        inline: ['@vue', '@vueuse', 'vue-demi'],
+      },
+    },
+
+    // https://github.com/antfu/vite-ssg
+    ssgOptions: {
+      script: 'async',
+      formatting: 'minify',
+      onFinished() {
+        generateSitemap()
+      },
+    },
+
+    ssr: {
+      // TODO: workaround until they support native ESM
+      noExternal: ['workbox-window', /vue-i18n/],
+    },
+  }
 })

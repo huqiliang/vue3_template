@@ -8,12 +8,18 @@ const router = useRouter()
     <div class="error404-body-con">
       <Card>
         <div class="error404-body-con-title">
-          4<span> <Icon type="ios-navigate-outline"></Icon> </span>4
+          4<span> <Icon type="ios-navigate-outline" /> </span>4
         </div>
-        <p class="error404-body-con-message">YOU&nbsp;&nbsp;LOOK&nbsp;&nbsp;LOST</p>
+        <p class="error404-body-con-message">
+          YOU&nbsp;&nbsp;LOOK&nbsp;&nbsp;LOST
+        </p>
         <div class="error404-btn-con">
-          <Button @click="router.push('/')" size="large" style="width: 200px" type="text">{{ t('system.home') }}</Button>
-          <Button @click="router.back()" size="large" style="width: 200px; margin-left: 40px" type="primary">{{ t('system.back') }}</Button>
+          <Button size="large" style="width: 200px" type="text" @click="router.push('/')">
+            {{ t('system.home') }}
+          </Button>
+          <Button size="large" style="width: 200px; margin-left: 40px" type="primary" @click="router.back()">
+            {{ t('system.back') }}
+          </Button>
         </div>
       </Card>
     </div>
@@ -93,6 +99,5 @@ const router = useRouter()
 
 <route lang="yaml">
 meta:
-  layout: local
   title: 全局错误页面
 </route>
