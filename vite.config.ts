@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 // import Preview from 'vite-plugin-vue-component-preview'
 import Vue from '@vitejs/plugin-vue'
 import Pages from 'vite-plugin-pages'
@@ -15,15 +15,12 @@ import Unocss from 'unocss/vite'
 import VueMacros from 'unplugin-vue-macros/vite'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import pkg from './package.json'
+const prefixDir = `${pkg.name}`
 
 export default defineConfig(({ mode }) => {
-  const type: any = {
-    frame: '有框模式',
-  }
-  console.log(`当前启动的模式是:${type[mode] || mode}`)
-
+  const env = loadEnv(mode, `${process.cwd()}/env`)
   return {
-    base: `/${pkg.name}`,
+    base: `/${prefixDir}`,
     envDir: 'env',
     server: {
       proxy: {
@@ -59,7 +56,7 @@ export default defineConfig(({ mode }) => {
 
       // https://github.com/JohnCampionJr/vite-plugin-vue-layouts
       Layouts({
-        defaultLayout: mode === 'frame' ? 'local' : 'default',
+        defaultLayout: env.VITE_LAYOUT,
       }),
 
       // https://github.com/antfu/unplugin-auto-import
@@ -129,6 +126,7 @@ export default defineConfig(({ mode }) => {
     ],
     build: {
       minify: 'terser',
+      outDir: `dist/${prefixDir}`,
       terserOptions: {
         compress: {
           // 生产环境时移除console
