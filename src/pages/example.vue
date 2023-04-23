@@ -354,11 +354,11 @@ export default {
       })
     },
     async clickHandle() {
-      this.$Message.info('2秒前')
+      this.$Message.info('开始请求')
       const res = await new Promise((resolve) => {
         setTimeout(resolve, 2000)
       })
-      this.$Message.info('2秒后')
+      this.$Message.info('请求完毕')
     },
   },
 }
@@ -409,12 +409,12 @@ export default {
       </div>
     </div>
     <div flex items-center mt-2>
-      <div mr10>
-        指令:
+      <div mr2>
+        自定义指令:
       </div>
       <div>
         <Button v-proClick="clickHandle" type="primary">
-          点击loading
+          防重点击
         </Button>
       </div>
     </div>

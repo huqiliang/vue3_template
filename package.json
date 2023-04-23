@@ -53,6 +53,7 @@
     "markdown-it-link-attributes": "^4.0.1",
     "markdown-it-shiki": "^0.8.1",
     "pnpm": "^7.32.2",
+    "serve": "^14.2.0",
     "shiki": "^0.14.1",
     "simple-git-hooks": "^2.8.1",
     "taze": "^0.9.1",
