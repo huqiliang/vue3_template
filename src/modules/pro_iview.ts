@@ -1,7 +1,6 @@
-import { createPinia } from 'pinia'
+import ProIview from 'pro_iview_v3'
 import { type UserModule } from '~/types'
 
 export const install: UserModule = ({ app }) => {
-  const pinia = createPinia()
-  app.use(pinia)
+  app.use(ProIview)
 }

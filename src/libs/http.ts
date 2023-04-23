@@ -6,7 +6,6 @@ Message.config({
   duration: 3,
 })
 axios.defaults.timeout = 60000
-axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
 
 axios.interceptors.request.use(
   (config) => {
@@ -37,7 +36,7 @@ axios.interceptors.response.use(
   (res: any) => {
     const { nomsg } = res.config.headers
     // 接口状态在此修改
-    if (res.data.result && (res.data.result !== 0)) {
+    if (res.data.result && res.data.result !== 0) {
       if (!nomsg) {
         Message.error({
           // 接口错误路径
@@ -61,15 +60,11 @@ axios.interceptors.response.use(
       }
       else {
         Message.error({
-          content: `${err.response.status}：${err.response.statusText || err.response.error
-            }`,
+          content: `${err.response.status}：${err.response.statusText || err.response.error}`,
         })
       }
     }
-    else if (
-      err.code === 'ECONNABORTED'
-      && err.message.includes('timeout')
-    ) {
+    else if (err.code === 'ECONNABORTED' && err.message.includes('timeout')) {
       Message.error({
         content: '请求超时!',
       })

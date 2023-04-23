@@ -299,7 +299,7 @@ export default {
             ],
           },
         ],
-        request: 'http://192.168.0.38:3000/mock/106/api/table',
+        request: '/mock/106/api/table',
         map: {
           dataPath: 'data',
           totalPath: 'totalRows',
