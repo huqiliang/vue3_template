@@ -1,6 +1,6 @@
 {
-  "name": "asdfin_front",
-  "appCode": "ASDFIN",
+  "name": "${projectName}",
+  "appCode": "${appCode}",
   "type": "module",
   "private": true,
   "packageManager": "pnpm@7.32.2",

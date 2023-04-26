@@ -1,0 +1,106 @@
+kind: pipeline
+type: docker
+name: ${projectName}
+
+volumes: # 声明数据卷
+  - name: ${projectName} # 数据卷名称
+    host: # Host Volume
+      path: /volumes/drone/volumes/web/${projectName}/node_modules # 宿主机目录    #绝对路径
+  - name: ssh # 数据卷名称
+    host: # Host Volume
+      path: /root/.ssh/id_rsa # 宿主机目录    #绝对路径
+
+#发布测试环境，使用scp传输文件夹
+steps:
+- name: build_test
+  image: node:16.0.0
+  depends_on: [clone] # 依赖的步骤，
+  volumes: # 挂载数据卷
+    - name: ${projectName} # 数据卷名称
+      path: /drone/src/node_modules # 容器内目录 绝对路径
+  commands:
+    - pwd
+    - node -v
+    - npm install
+    - npm run build -- --mode=development
+  when:
+    event: [push, pull_request]
+    branch: [master, develop, feature/*]
+ 
+- name: deploy_test
+  image: appleboy/drone-scp
+  depends_on: [build_test]
+  volumes: # 挂载数据卷
+    - name: ssh # 数据卷名称
+      path: /root/.ssh/id_rsa # 容器内目录 绝对路径
+  settings:
+    host: 192.168.0.85
+    port: 3305
+    username: root
+    rm: true
+    key_path: /root/.ssh/id_rsa
+    # 来源项目目录
+    source: ./dist/*
+    strip_components: 1
+    # 目标服务器目录
+    target: /usr/local/nginx/html/${projectName}
+  when:
+    event: [push, pull_request]
+    branch: [master, develop, feature/*]
+
+- name: dingtalk_test
+  depends_on: [deploy_test]
+  image: lddsb/drone-dingtalk-message
+  settings:
+    token: 9a1315a13cd5387166d957ec25cd28c3047175626600dbf513dd9939487b401c
+    secret: SEC8c0870264e446118e30017476914fd5f506e7174f0fd3823abbb2cfe01223595
+    tpl: https://front-1251575231.cos.ap-shanghai.myqcloud.com/dingtalk_tpl_test.md
+    type: markdown
+  when:
+    event: [push, pull_request]
+    branch: [master, develop ,feature/*]
+
+- name: build_prd
+  image: node:16.0.0
+  depends_on: [clone] # 依赖的步骤，
+  volumes: # 挂载数据卷
+    - name: ${projectName} # 数据卷名称
+      path: /drone/src/node_modules # 容器内目录 绝对路径
+  commands:
+    - pwd
+    - node -v
+    - npm install
+    - npm run build -- --mode=production
+  when:
+    event: [tag]
+
+- name: deploy_prd
+  image: appleboy/drone-scp
+  depends_on: [build_prd]
+  volumes: # 挂载数据卷
+    - name: ssh # 数据卷名称
+      path: /root/.ssh/id_rsa # 容器内目录 绝对路径
+  settings:
+    host: 182.254.221.252
+    port: 3305
+    username: root
+    rm: true
+    key_path: /root/.ssh/id_rsa
+    # 来源项目目录
+    source: ./dist/*
+    strip_components: 1
+    # 目标服务器目录
+    target: /usr/local/nginx/html/${projectName}
+  when:
+    event: [tag]
+
+- name: dingtalk_prd
+  depends_on: [deploy_prd]
+  image: lddsb/drone-dingtalk-message
+  settings:
+    token: 9a1315a13cd5387166d957ec25cd28c3047175626600dbf513dd9939487b401c
+    secret: SEC8c0870264e446118e30017476914fd5f506e7174f0fd3823abbb2cfe01223595
+    tpl: https://front-1251575231.cos.ap-shanghai.myqcloud.com/dingtalk_tpl_prd.md
+    type: markdown
+  when:
+    event: [tag]
