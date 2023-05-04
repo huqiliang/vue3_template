@@ -6,8 +6,8 @@
   "packageManager": "pnpm@7.32.2",
   "scripts": {
     "build": "vite build",
-    "dev": "VITE_LAYOUT='local' vite --port 3333 --open",
-    "dev-default": "vite --port 3332 --open",
+    "dev": "VITE_LAYOUT='local' vite --open",
+    "dev-default": "vite --open",
     "lint": "eslint .",
     "preview": "vite preview",
     "preview-https": "serve dist",
