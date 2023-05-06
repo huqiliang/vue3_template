@@ -17,7 +17,7 @@ import removeConsole from 'vite-plugin-remove-console'
 
 import pkg from './package.json'
 
-const prefixDir = pkg.name
+const prefixDir = pkg.appCode.includes('$') ? 'appCode' : pkg.appCode
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, `${process.cwd()}/env`)

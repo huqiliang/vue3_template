@@ -2,10 +2,11 @@
 import { RouterLink } from 'vue-router'
 import generatedRoutes from '~pages'
 import { filePathsToTree } from '~/libs/files'
+
 // 获取路由树
 const routes: any = filePathsToTree(generatedRoutes)
 // 自定义渲染
-const renderContent = (h: any, { data }: any) => {
+function renderContent(h: any, { data }: any) {
   return (
     <RouterLink to={data.path}>
       {data.title || data.name}({data.path})
@@ -17,7 +18,7 @@ const { VITE_BASE_URL, MODE } = import.meta.env
 
 <template>
   <div>
-    <p>构建模式: {{ MODE }}</p>
+    <p>当前模式: {{ MODE }}</p>
     <p mt2>
       接口地址: {{ VITE_BASE_URL }}
     </p>

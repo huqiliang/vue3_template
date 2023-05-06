@@ -1,5 +1,5 @@
 {
-  "name": "${projectName}",
+  "name": "pro_template",
   "appCode": "${appCode}",
   "type": "module",
   "private": true,
@@ -7,7 +7,7 @@
   "scripts": {
     "build": "vite build",
     "dev": "VITE_LAYOUT='local' vite --open",
-    "dev-default": "vite --open",
+    "dev-prod": "vite --open",
     "lint": "eslint .",
     "preview": "vite preview",
     "preview-https": "serve dist",

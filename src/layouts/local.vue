@@ -16,7 +16,7 @@ const page = reactive({ tips: false })
 const routes: any = filePathsToTree(generatedRoutes)
 
 // UC授权
-const auth = async () => {
+async function auth() {
   const res: any = await axios({
     url: 'https://test.ihotel.cn/uc-web/sso/login',
     method: 'post',
@@ -45,7 +45,7 @@ const auth = async () => {
 <template>
   <div class="layout">
     <Layout>
-      <Sider ref="side1" class="vh" hide-trigger collapsible :collapsed-width="78">
+      <Sider class="vh" hide-trigger collapsible :collapsed-width="78">
         <InfiniteMenu :menu-list="routes" />
       </Sider>
       <Layout>
