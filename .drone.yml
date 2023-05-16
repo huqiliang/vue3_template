@@ -1,11 +1,11 @@
 kind: pipeline
 type: docker
-name: ${projectName}
+name: ${appCode}-front
 
 volumes: # 声明数据卷
-  - name: ${projectName} # 数据卷名称
+  - name: ${appCode}-front # 数据卷名称
     host: # Host Volume
-      path: /volumes/drone/volumes/web/${projectName}/node_modules # 宿主机目录    #绝对路径
+      path: /volumes/drone/volumes/web/${appCode}-front/node_modules # 宿主机目录    #绝对路径
   - name: ssh # 数据卷名称
     host: # Host Volume
       path: /root/.ssh/id_rsa # 宿主机目录    #绝对路径
@@ -16,7 +16,7 @@ steps:
   image: node:16.0.0
   depends_on: [clone] # 依赖的步骤，
   volumes: # 挂载数据卷
-    - name: ${projectName} # 数据卷名称
+    - name: ${appCode}-front # 数据卷名称
       path: /drone/src/node_modules # 容器内目录 绝对路径
   commands:
     - pwd
@@ -43,7 +43,7 @@ steps:
     source: ./dist/*
     strip_components: 1
     # 目标服务器目录
-    target: /usr/local/nginx/html/${projectName}
+    target: /usr/local/nginx/html/${appCode}-front
   when:
     event: [push, pull_request]
     branch: [master, develop, feature/*]
@@ -52,8 +52,8 @@ steps:
   depends_on: [deploy_test]
   image: lddsb/drone-dingtalk-message
   settings:
-    token: 9a1315a13cd5387166d957ec25cd28c3047175626600dbf513dd9939487b401c
-    secret: SEC8c0870264e446118e30017476914fd5f506e7174f0fd3823abbb2cfe01223595
+    token: ${ding_token}
+    secret: ${ding_secret}
     tpl: https://front-1251575231.cos.ap-shanghai.myqcloud.com/dingtalk_tpl_test.md
     type: markdown
   when:
@@ -64,7 +64,7 @@ steps:
   image: node:16.0.0
   depends_on: [clone] # 依赖的步骤，
   volumes: # 挂载数据卷
-    - name: ${projectName} # 数据卷名称
+    - name: ${appCode}-front # 数据卷名称
       path: /drone/src/node_modules # 容器内目录 绝对路径
   commands:
     - pwd
@@ -90,7 +90,7 @@ steps:
     source: ./dist/*
     strip_components: 1
     # 目标服务器目录
-    target: /usr/local/nginx/html/${projectName}
+    target: /usr/local/nginx/html/${appCode}-front
   when:
     event: [tag]
 
@@ -98,8 +98,8 @@ steps:
   depends_on: [deploy_prd]
   image: lddsb/drone-dingtalk-message
   settings:
-    token: 9a1315a13cd5387166d957ec25cd28c3047175626600dbf513dd9939487b401c
-    secret: SEC8c0870264e446118e30017476914fd5f506e7174f0fd3823abbb2cfe01223595
+    token: ${ding_token}
+    secret: ${ding_secret}
     tpl: https://front-1251575231.cos.ap-shanghai.myqcloud.com/dingtalk_tpl_prd.md
     type: markdown
   when:
