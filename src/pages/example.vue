@@ -118,10 +118,10 @@ export default {
               return (
                 <Button
                   onclick={() => {
-                    console.log('aaa')
+                    this.$Message.info({ content: '自定义按钮' })
                   }}
                 >
-                  aaa
+                  自定义
                 </Button>
               )
             },
