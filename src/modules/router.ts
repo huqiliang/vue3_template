@@ -13,5 +13,5 @@ export const install: UserModule = ({ app }) => {
   return router
 }
 
-export const step = 0
-export const name = 'router'
+export const step = 0 // 加载中间件顺序
+export const name = 'router' // 上下文名称 其他中间件中使用时候的参数名 例:nprogress.ts
