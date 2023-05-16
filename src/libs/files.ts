@@ -3,7 +3,7 @@ const sep = '-'
 /**
  * Takes a list of file paths and turns it into a tree. For each node you can attach own data using a callback.
  */
-export const filePathsToTree = <Data>(paths: Object[], getData?: (node: Array<Data>) => Data) => {
+export function filePathsToTree<Data>(paths: Object[], getData?: (node: Array<Data>) => Data) {
   const results: Array<Data>[] = []
 
   return paths.reduce((currentResults, currentPath: any) => {
@@ -18,7 +18,7 @@ export const filePathsToTree = <Data>(paths: Object[], getData?: (node: Array<Da
         node = {
           name,
           path: name === 'index' ? '/' : `/${path}`,
-          title: ((`/${path}` === myPath || path==='all') && meta) ? meta.title : '',
+          title: ((`/${path}` === myPath || path === 'all') && meta) ? meta.title : '',
           children: [],
         }
 

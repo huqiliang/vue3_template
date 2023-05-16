@@ -355,7 +355,7 @@ export default {
     },
     async clickHandle() {
       this.$Message.info('开始请求')
-      const res = await new Promise((resolve) => {
+      await new Promise((resolve) => {
         setTimeout(resolve, 2000)
       })
       this.$Message.info('请求完毕')
