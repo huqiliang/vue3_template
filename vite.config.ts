@@ -22,7 +22,7 @@ const prefixDir = pkg.appCode.includes('$') ? 'appCode' : pkg.appCode
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, `${process.cwd()}/env`)
   return {
-    base: `/${prefixDir}`,
+    base: `/${prefixDir}/`,
     envDir: 'env',
     server: {
       proxy: {
