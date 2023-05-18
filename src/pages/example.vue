@@ -271,7 +271,7 @@ export default {
                 method: 'POST',
                 type: 'edit',
                 request(options) {
-                  return axios.post('http://192.168.0.38:3000/mock/67/sys/sysOptionList', {
+                  return axios.post('/mock/67/sys/sysOptionList', {
                     a: options.row.cateLog,
                   })
                 },
@@ -279,20 +279,20 @@ export default {
               {
                 type: 'delete',
                 title: '普通删除',
-                request: 'http://192.168.0.38:3000/mock/106/api/table/',
+                request: '/mock/106/api/table/',
                 method: 'DELETE',
               },
 
               {
                 type: 'delete',
                 title: '链接带参删除',
-                request: 'http://192.168.0.38:3000/mock/106/api/table/${id}',
+                request: '/mock/106/api/table/${id}',
                 method: 'DELETE',
               },
               {
                 title: '请求体带参删除',
                 type: 'delete',
-                request: 'http://192.168.0.38:3000/mock/106/api/table',
+                request: '/mock/106/api/table',
                 method: 'DELETE',
                 keys: ['id'],
               },
@@ -305,7 +305,7 @@ export default {
           totalPath: 'totalRows',
           message: 'message',
         },
-        submitForm: 'http://192.168.0.38:3000/mock/106/api/test',
+        submitForm: '/mock/106/api/test',
       }
     },
   },

@@ -6,6 +6,7 @@ Message.config({
   duration: 3,
 })
 axios.defaults.timeout = 60000
+// axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
 
 axios.interceptors.request.use(
   (config) => {

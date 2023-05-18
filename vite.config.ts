@@ -21,18 +21,19 @@ const prefixDir = pkg.appCode.includes('$') ? 'appCode' : pkg.appCode
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, `${process.cwd()}/env`)
+
   return {
     base: `/${prefixDir}/`,
     envDir: 'env',
     server: {
       proxy: {
         '/api': {
-          target: 'http://192.168.0.137:8890/',
+          target: env.VITE_BASE_URL,
           changeOrigin: true,
-          rewrite: (path: any) => path.replace(/^\/api/, ''),
+          // rewrite: (path: any) => path.replace(/^\/api/, ''),
         },
         '/mock': {
-          target: 'http://192.168.0.38:3000',
+          target: env.VITE_BASE_MOCK,
           changeOrigin: true,
         },
       },
