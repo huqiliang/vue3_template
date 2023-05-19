@@ -7,7 +7,7 @@ export function filePathsToTree<Data>(paths: Object[], getData?: (node: Array<Da
   const results: Array<Data>[] = []
 
   return paths.reduce((currentResults, currentPath: any) => {
-    const { meta, path: myPath } = currentPath
+    const { meta } = currentPath
     const pathParts = currentPath.name.split(sep)
     const byPath: Record<string, Array<Data>> = {}
     pathParts.reduce((nodes: any, name: string, index: number, arr: any) => {
@@ -18,7 +18,7 @@ export function filePathsToTree<Data>(paths: Object[], getData?: (node: Array<Da
         node = {
           name,
           path: name === 'index' ? '/' : `/${path}`,
-          title: ((`/${path}` === myPath || path === 'all') && meta) ? meta.title : '',
+          title: ((path === name || name === 'all' || name === 'index') && meta) ? meta.title : '',
           children: [],
         }
 
