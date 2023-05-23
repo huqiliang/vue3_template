@@ -21,6 +21,7 @@ const prefixDir = pkg.appCode.includes('$') ? 'appCode' : pkg.appCode
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, `${process.cwd()}/env`)
+  console.log(env)
 
   return {
     base: `/${prefixDir}/`,
@@ -101,9 +102,11 @@ export default defineConfig(({ mode }) => {
       Inspector({
         toggleButtonVisibility: 'never',
       }),
-      removeConsole(),
+      mode === 'production' ? removeConsole() : null,
     ],
     build: {
+      minify: mode !== 'development',
+      sourcemap: mode !== 'development',
       outDir: `dist/${prefixDir}`,
     },
     // https://github.com/vitest-dev/vitest
