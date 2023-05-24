@@ -1,11 +1,11 @@
 kind: pipeline
 type: docker
-name: ${appCode}-front
+name: ${appCode}
 
 volumes: # 声明数据卷
-  - name: ${appCode}-front # 数据卷名称
+  - name: ${appCode} # 数据卷名称
     host: # Host Volume
-      path: /volumes/drone/volumes/web/${appCode}-front/node_modules # 宿主机目录    #绝对路径
+      path: /volumes/drone/volumes/web/${appCode}/node_modules # 宿主机目录    #绝对路径
   - name: ssh # 数据卷名称
     host: # Host Volume
       path: /root/.ssh/id_rsa # 宿主机目录    #绝对路径
@@ -17,7 +17,7 @@ steps:
     pull: never
     depends_on: [clone] # 依赖的步骤，
     volumes: # 挂载数据卷
-      - name: ${appCode}-front # 数据卷名称
+      - name: ${appCode} # 数据卷名称
         path: /drone/src/node_modules # 容器内目录 绝对路径
     commands:
       - pwd
@@ -45,7 +45,7 @@ steps:
       source: ./dist/*
       strip_components: 2
       # 目标服务器目录
-      target: /usr/local/nginx/html/${appCode}-front
+      target: /usr/local/nginx/html/${appCode}
     when:
       event: [push, pull_request]
       branch: [master, develop]
@@ -68,7 +68,7 @@ steps:
     pull: never
     depends_on: [clone] # 依赖的步骤，
     volumes: # 挂载数据卷
-      - name: ${appCode}-front # 数据卷名称
+      - name: ${appCode} # 数据卷名称
         path: /drone/src/node_modules # 容器内目录 绝对路径
     commands:
       - pwd
@@ -95,7 +95,7 @@ steps:
       source: ./dist/*
       strip_components: 2
       # 目标服务器目录
-      target: /usr/local/nginx/html/${appCode}-front
+      target: /usr/local/nginx/html/${appCode}
     when:
       event: [tag]
 
