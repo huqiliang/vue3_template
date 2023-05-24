@@ -43,7 +43,7 @@ steps:
       key_path: /root/.ssh/id_rsa
       # 来源项目目录
       source: ./dist/*
-      strip_components: 1
+      strip_components: 2
       # 目标服务器目录
       target: /usr/local/nginx/html/${appCode}-front
     when:
@@ -93,7 +93,7 @@ steps:
       key_path: /root/.ssh/id_rsa
       # 来源项目目录
       source: ./dist/*
-      strip_components: 1
+      strip_components: 2
       # 目标服务器目录
       target: /usr/local/nginx/html/${appCode}-front
     when:
