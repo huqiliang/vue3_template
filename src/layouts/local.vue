@@ -2,7 +2,6 @@
 import { Message } from 'view-ui-plus'
 import axios from 'axios'
 import { storeToRefs } from 'pinia'
-import { appCode } from '../../package.json'
 import generatedRoutes from '~pages'
 import { filePathsToTree } from '~/libs/files'
 
@@ -21,7 +20,7 @@ async function auth() {
     url: 'https://test.ihotel.cn/uc-web/sso/login',
     method: 'post',
     data: {
-      appCode,
+      appCode: '',
       orgCode: 'GCBZG',
       userCode: 'GCBZG_ADMIN',
       password: 'e10adc3949ba59abbe56e057f20f883e',
