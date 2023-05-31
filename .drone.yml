@@ -22,7 +22,7 @@ steps:
     commands:
       - pwd
       - node -v
-      - npm install
+      - npm install  --legacy-peer-deps
       - npm run build -- --mode=development
     when:
       event: [push, pull_request]
@@ -73,7 +73,7 @@ steps:
     commands:
       - pwd
       - node -v
-      - npm install
+      - npm install  --legacy-peer-deps
       - npm run build -- --mode=production
     when:
       event: [tag]
