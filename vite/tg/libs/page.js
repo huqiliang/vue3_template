@@ -1,10 +1,10 @@
 import { createWriteStream } from 'node:fs'
 import { join } from 'node:path'
 import prettier from 'prettier'
-import { mkdirs } from '../utils'
+import { mkdirs } from './tools.js'
 
 // 创建文件
-export async function createPage(options: { viewPath: string; code: string }) {
+export async function createPage(options) {
   // 格式化内容
   const content = prettier.format(options.code, {
     parser: 'babel',

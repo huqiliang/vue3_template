@@ -64,6 +64,12 @@ async function auth() {
   }
 }
 
+// window.addEventListener('message', (e) => {
+//   const { type } = e.data
+//   if (type === 'tg')
+//     console.log(e.data)
+// }, false)
+
 // 天工
 function tgToggle() {
   const { form } = settings
