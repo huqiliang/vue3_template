@@ -1,0 +1,10 @@
+{
+  "appCode": "${appCode}",
+  "tg": {
+    "open": true,
+    "project_id": "b4b1f7b3d8a54f09a0a6d466a4fa5222",
+    "pageMap": {
+      "example": "aaa"
+    }
+  }
+}

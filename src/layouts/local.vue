@@ -2,14 +2,38 @@
 import { Message } from 'view-ui-plus'
 import axios from 'axios'
 import { storeToRefs } from 'pinia'
+import projectConfig from '../../project.config.json'
 import generatedRoutes from '~pages'
 import { filePathsToTree } from '~/libs/files'
 
 const store = useLocaleStore()
+// const route = useRoute()
 
 const { locale, localeArray } = storeToRefs(store)
 
 const page = reactive({ tips: false })
+
+// 全局设置配置
+const settings = reactive({
+  show: false,
+  columns: [
+    {
+      title: '开启天工',
+      key: 'open',
+      renderForm: {
+        type: 'i-switch',
+      },
+    },
+    {
+      title: '项目id',
+      key: 'project_id',
+      showForm(params: any) {
+        return params.value.open
+      },
+    },
+  ],
+  form: { ...projectConfig.tg, show: false, src: '' },
+})
 
 // 获取路由树
 const routes: any = filePathsToTree(generatedRoutes)
@@ -39,6 +63,24 @@ async function auth() {
     page.tips = true
   }
 }
+
+// 天工
+function tgToggle() {
+  const { form } = settings
+  form.show = !form.show
+  if (settings.form.show)
+    form.src = 'http://localhost:8081/#/build?project_id=b4b1f7b3d8a54f09a0a6d466a4fa5222&page_id=1a6a731647454f2d9ce7f6ee7dfa3a75&local=true'
+    // form.src
+    // = 'https://work.ihotel.cn/login?redirect=http://192.168.0.38:8989/#/build?service=TG&project_id=cce2b795d63e44bca54bd1c6e58d0fec&page_id=1a6a731647454f2d9ce7f6ee7dfa3a75&local=true'
+
+  // axios.post('/__tg_createPage', { viewPath: '/pages/test3.vue', code: '<template><pro-table v-bind="config" />/template>' })
+}
+// 保存天工配置
+
+async function saveTGConfig() {
+  const res = await axios.post('/__tg_tgConfig', settings.form)
+  console.log(res)
+}
 </script>
 
 <template>
@@ -48,21 +90,49 @@ async function auth() {
         <InfiniteMenu :menu-list="routes" />
       </Sider>
       <Layout>
-        <Header class="layout-header-bar flex items-center justify-between p5">
-          <div>
-            <Button class="mr5" type="success" @click="auth">
-              授权
-            </Button>
-          </div>
-          <div style="width: 90px">
-            <pro-select v-model="locale" :list="localeArray" />
+        <Header class="layout-header-bar" style="padding:0">
+          <div class="flex items-center justify-between px-5" :class="settings.form.show && settings.form.open ? 'bg-yellow-200' : ''">
+            <div>
+              <Button class="mr5" type="success" @click="auth">
+                授权
+              </Button>
+              <Button
+                v-if="settings.form.open"
+                class="mr5"
+                :type="!settings.form.show ? 'default' : 'primary'"
+                @click="tgToggle"
+              >
+                天工
+              </Button>
+            </div>
+            <div style="width: 120px" flex items-center>
+              <pro-select v-model="locale" :list="localeArray" mr3 />
+              <Icon
+                type="ios-settings"
+                size="25"
+                cursor-pointer
+                @click="settings.show = true"
+              />
+            </div>
           </div>
         </Header>
         <Content id="#app" p-5>
-          <router-view />
+          <iframe v-if="settings.form.open && settings.form.show" class="iframe" :src="settings.form.src" />
+          <router-view v-else />
         </Content>
       </Layout>
     </Layout>
+    <Modal v-model="settings.show" title="全局项目配置" :footer-hide="true" @on-cancel="saveTGConfig">
+      <div>
+        <Steps :current="1">
+          <Step title="已完成" content="这里是该步骤的描述信息" />
+          <Step title="进行中" content="这里是该步骤的描述信息" />
+          <Step title="待进行" content="这里是该步骤的描述信息" />
+          <Step title="待进行" content="这里是该步骤的描述信息" />
+        </Steps>
+        <pro-form v-model="settings.form" :columns="settings.columns" />
+      </div>
+    </Modal>
     <Modal v-model="page.tips">
       <div>
         <p p-1>
@@ -84,12 +154,19 @@ async function auth() {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="less">
 .layout {
   background: #f5f7f9;
   position: relative;
   min-height: 100vh;
   overflow: hidden;
+  .iframe {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    border: 1px dashed #ccc;
+    display: block;
+  }
 }
 .vh {
   min-height: 100vh;
