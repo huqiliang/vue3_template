@@ -5,7 +5,7 @@ defineOptions({
 </script>
 
 <template>
-  <div>首页</div>
+  <div>首页2</div>
   <div u-carbon-align-vertical-bottom inline-block />
 </template>
 

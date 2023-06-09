@@ -1,0 +1,9 @@
+<script setup>
+const config = reactive(
+  {{ config.props | dump | safe}}
+)
+</script>
+
+<template>
+  <{{ config.name }} v-bind="config" />
+</template>

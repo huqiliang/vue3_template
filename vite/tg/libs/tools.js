@@ -1,4 +1,4 @@
-import fs from 'node:fs'
+import fs, { createWriteStream } from 'node:fs'
 import { join } from 'node:path'
 
 // 创建目录
@@ -60,6 +60,29 @@ export function mkdirs(path) {
   return p
 }
 
+// 根据文件流保存文件
+export function saveFile(filePath, fileData) {
+  return new Promise((resolve, reject) => {
+    // 块方式写入文件
+    const wstream = createWriteStream(filePath, { flags: 'w' })
+
+    wstream.on('open', () => {
+      const blockSize = 128
+      const nbBlocks = Math.ceil(fileData.length / (blockSize))
+      for (let i = 0; i < nbBlocks; i += 1) {
+        const currentBlock = fileData.slice(
+          blockSize * i,
+          Math.min(blockSize * (i + 1), fileData.length),
+        )
+        wstream.write(currentBlock)
+      }
+
+      wstream.end()
+    })
+    wstream.on('error', (err) => { reject(err) })
+    wstream.on('finish', () => { resolve(true) })
+  })
+}
 export default {
-  mkdirs,
+  mkdirs, saveFile,
 }
