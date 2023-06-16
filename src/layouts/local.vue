@@ -18,7 +18,16 @@ const settings = reactive({
   show: false,
   columns: [
     {
+      title: '过滤系统菜单',
+      key: 'system',
+      group: '系统',
+      renderForm: {
+        type: 'i-switch',
+      },
+    },
+    {
       title: '开启天工',
+      group: '天工',
       key: 'open',
       renderForm: {
         type: 'i-switch',
@@ -64,12 +73,6 @@ async function auth() {
   }
 }
 
-// window.addEventListener('message', (e) => {
-//   const { type } = e.data
-//   if (type === 'tg')
-//     console.log(e.data)
-// }, false)
-
 // 天工
 function tgToggle() {
   const { form } = settings
@@ -87,6 +90,9 @@ async function saveTGConfig() {
   const res = await axios.post('/__tg_tgConfig', settings.form)
   console.log(res)
 }
+async function openAddNew() {
+
+}
 </script>
 
 <template>
@@ -94,6 +100,9 @@ async function saveTGConfig() {
     <Layout>
       <Sider class="vh" hide-trigger collapsible :collapsed-width="78">
         <InfiniteMenu :menu-list="routes" />
+        <div border-dashed color-white text-center py-2 mx-3 cursor-pointer @click="openAddNew">
+          新增页面
+        </div>
       </Sider>
       <Layout>
         <Header class="layout-header-bar" style="padding:0">
@@ -130,12 +139,12 @@ async function saveTGConfig() {
     </Layout>
     <Modal v-model="settings.show" title="全局项目配置" :footer-hide="true" @on-cancel="saveTGConfig">
       <div>
-        <Steps :current="1">
+        <!-- <Steps :current="1">
           <Step title="已完成" content="这里是该步骤的描述信息" />
           <Step title="进行中" content="这里是该步骤的描述信息" />
           <Step title="待进行" content="这里是该步骤的描述信息" />
           <Step title="待进行" content="这里是该步骤的描述信息" />
-        </Steps>
+        </Steps> -->
         <pro-form v-model="settings.form" :columns="settings.columns" />
       </div>
     </Modal>
