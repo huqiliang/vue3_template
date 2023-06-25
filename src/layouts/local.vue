@@ -66,7 +66,6 @@ async function auth() {
   if (res.success) {
     localStorage.setItem('token', res.retVal.jwtToken)
     Message.success({ content: '授权成功' })
-    window.location.reload()
   }
   else {
     page.tips = true
@@ -100,7 +99,7 @@ async function openAddNew() {
     <Layout>
       <Sider class="vh" hide-trigger collapsible :collapsed-width="78">
         <InfiniteMenu :menu-list="routes" />
-        <div border-dashed color-white text-center py-2 mx-3 cursor-pointer @click="openAddNew">
+        <div v-if="settings.form.open" mt-2 border-dashed color-white text-center py-2 mx-3 cursor-pointer @click="openAddNew">
           新增页面
         </div>
       </Sider>

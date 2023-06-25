@@ -11,7 +11,6 @@ const { menuList } = props
     <template v-for="item in menuList" :key="item.path">
       <Submenu v-if="item.children && item.children.length > 0" :name="item.path">
         <template #title>
-          <Icon type="ios-filing" />
           {{ item.title || item.name }}
         </template>
         <InfiniteMenu :menu-list="item.children" />
