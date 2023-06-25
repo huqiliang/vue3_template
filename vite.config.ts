@@ -66,7 +66,7 @@ export default defineConfig(({ mode }) => {
       vueJsx(),
       // https://github.com/hannoeru/vite-plugin-pages
       Pages({
-        extensions: ['vue', 'md'],
+        extensions: ['vue'],
       }),
 
       // https://github.com/JohnCampionJr/vite-plugin-vue-layouts

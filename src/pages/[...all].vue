@@ -96,8 +96,3 @@ const router = useRouter()
   }
 }
 </style>
-
-<route lang="yaml">
-meta:
-  title: 全局错误页面
-</route>
