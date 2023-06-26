@@ -6,11 +6,11 @@ defineOptions({
 
 <template>
   <div>
-    页面生成 - code:{{ page.uuid }},title:{{ page.title }}
+    页面生成 - {{ page.title or page.uuid}}
   </div>
 </template>
 
 <route lang="yaml">
 meta:
-  title: {{ page.title }}
+  title: {{ page.title or page.uuid}}
 </route>

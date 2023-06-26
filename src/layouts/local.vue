@@ -28,22 +28,12 @@ const settings = reactive({
         type: 'i-switch',
       },
     },
-    // {
-    //   title: '项目匹配',
-    //   key: 'project_id',
-    //   showForm(params: any) {
-    //     return params.value.open
-    //   },
-    //   renderForm() {
-    //     return <pro-select request={() => {
-    //       return axios.get(`${tgServer}/api/projects`, { headers: { aa: 'Aa', Authorization: tg.jwt, noAuth: true } })
-    //     }} map={{ titlePath: 'title', valuePath: 'uuid', dataPath: 'data.rows' }}></pro-select>
-    //   },
-    // },
   ],
   form: { ...projectConfig.tg, show: false },
 })
-
+const tgOpen = computed(() => {
+  return settings.form.jwt && settings.form.project_id && settings.form.open
+})
 const tgSrc = ref('')
 // 新增页面
 const addNew = reactive({
@@ -104,8 +94,9 @@ function tgToggle() {
 
 async function saveTGConfig() {
   if (tg.jwt && tg.project_id) {
-    const res = await axios.post(`${localTgServer}/saveTGConfig`, settings.form)
-    console.log(res)
+    const { open } = settings.form
+    await axios.post(`${localTgServer}/saveTGConfig`, { open })
+    Message.success({ content: '设置成功 正在重启' })
   }
 }
 
@@ -123,19 +114,19 @@ async function addNewHandle() {
     <Layout>
       <Sider class="vh" hide-trigger collapsible :collapsed-width="78">
         <InfiniteMenu :menu-list="routes" />
-        <div v-if="settings.form.open" mt-2 border-dashed color-white text-center py-2 mx-3 cursor-pointer @click="addNew.form = {};addNew.show = true;">
+        <div v-if="tgOpen" mt-2 border-dashed color-white text-center py-2 mx-3 cursor-pointer @click="addNew.form = {};addNew.show = true;">
           新增页面
         </div>
       </Sider>
       <Layout>
         <Header class="layout-header-bar" style="padding:0">
-          <div class="flex items-center justify-between px-5" :class="settings.form.show && settings.form.open ? 'bg-yellow-200' : ''">
+          <div class="flex items-center justify-between px-5" :class="settings.form.show && tgOpen ? 'bg-yellow-200' : ''">
             <div>
               <Button class="mr5" type="success" @click="auth">
                 授权
               </Button>
               <Button
-                v-if="settings.form.open"
+                v-if="tgOpen"
                 class="mr5"
                 :type="!settings.form.show ? 'default' : 'primary'"
                 @click="tgToggle"
@@ -155,7 +146,7 @@ async function addNewHandle() {
           </div>
         </Header>
         <Content id="#app" p-5>
-          <iframe v-if="settings.form.open && settings.form.show" class="iframe" :src="tgSrc" />
+          <iframe v-if="tgOpen && settings.form.show" class="iframe" :src="tgSrc" />
           <router-view v-else />
         </Content>
       </Layout>
