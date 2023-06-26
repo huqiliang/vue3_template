@@ -40,7 +40,7 @@ const addNew = reactive({
   show: false,
   columns: [{
     title: '代码',
-    key: 'uuid',
+    key: 'name',
     rules: [
       {
         required: true,

@@ -4,7 +4,7 @@
   "childPort": 8989,
   "tg": {
     "open": true,
-    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhxbCIsIm5hbWUiOm51bGwsImdyb3VwcyI6WyJnYyIsImJhc2UiLCJwbXMiXSwicG9ydHJhaXQiOiIiLCJpYXQiOjE2ODc3Njc5MzAsImV4cCI6MTY4Nzg1NDMzMH0.nNRSAWuqYHNyPN_h9LCPafVHYPn7MR84ImPkX3GjAO8",
-    "project_id": "b4b1f7b3d8a54f09a0a6d466a4fa5222"
+    "jwt": "",
+    "project_id": ""
   }
 }

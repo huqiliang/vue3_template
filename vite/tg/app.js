@@ -45,7 +45,10 @@ app.post('/saveLocal', async (req, res) => {
 
 app.post('/saveNew', async (req, res) => {
   const page = await parseJson(req)
-  const { uuid } = page
+  const { name } = page
+  // 去天工创建页面
+  // const tg = await axios.post()
+
   const code = nunjucks.render(join('./vite/tg/view/new.nj'), { page })
   createPage({ code, name: uuid })
   res.send({ code: 0 })
