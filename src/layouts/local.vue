@@ -41,8 +41,10 @@ const settings = reactive({
     //   },
     // },
   ],
-  form: { ...projectConfig.tg, show: false, src: '' },
+  form: { ...projectConfig.tg, show: false },
 })
+
+const tgSrc = ref('')
 // 新增页面
 const addNew = reactive({
   show: false,
@@ -95,14 +97,16 @@ function tgToggle() {
   form.show = !form.show
   if (settings.form.show) {
     const { name } = route
-    form.src = `${tgServer}/#/build?project_id=${tg.project_id}&page_id=${name}&local=true&port=${childPort}`
+    tgSrc.value = `${tgServer}/#/build?project_id=${tg.project_id}&page_id=${name}&local=true&port=${childPort}`
   }
 }
 // 保存天工配置
 
 async function saveTGConfig() {
-  const res = await axios.post(`${localTgServer}/saveTGConfig`, settings.form)
-  console.log(res)
+  if (tg.jwt && tg.project_id) {
+    const res = await axios.post(`${localTgServer}/saveTGConfig`, settings.form)
+    console.log(res)
+  }
 }
 </script>
 
@@ -143,7 +147,7 @@ async function saveTGConfig() {
           </div>
         </Header>
         <Content id="#app" p-5>
-          <iframe v-if="settings.form.open && settings.form.show" class="iframe" :src="settings.form.src" />
+          <iframe v-if="settings.form.open && settings.form.show" class="iframe" :src="tgSrc" />
           <router-view v-else />
         </Content>
       </Layout>

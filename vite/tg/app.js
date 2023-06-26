@@ -4,7 +4,7 @@ import express from 'express'
 import cors from 'cors'
 import nunjucks from 'nunjucks'
 import prettier from 'prettier'
-import  _ from "lodash-es"
+import _ from 'lodash-es'
 import { findUsablePort } from './libs/port.js'
 import { createPage } from './libs/page.js'
 import { parseJson } from './libs/tools.js'
@@ -22,11 +22,15 @@ function changeJson(key, value) {
   } else {
     config[key] = value
   }
-  const content = prettier.format(JSON.stringify(config), {
-    parser: 'json'
-  })
-  return fs.promises.writeFile('project.config.json', content)
+  if (!_.isEqual(config[key], value)) {
+    const content = prettier.format(JSON.stringify(config), {
+      parser: 'json'
+    })
+    return fs.promises.writeFile('project.config.json', content)
+  }
 }
+
+await changeJson('childPort', port)
 
 app.get('/', (req, res) => {
   res.send('Hello World 2222!')
@@ -46,6 +50,5 @@ app.post('/saveTGConfig', async (req, res) => {
 })
 
 app.listen(port, async () => {
-  await changeJson('childPort', port)
   console.log(`天工端口监听:${port}`)
 })
