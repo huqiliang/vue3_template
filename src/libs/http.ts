@@ -12,7 +12,10 @@ axios.interceptors.request.use(
   (config) => {
     // 这边可根据自己的需求设置headers，我司采用basic基本认证
     const authToken = localStorage.getItem('token')
-    if (!_.isEmpty(authToken))
+
+    console.log(config.headers.noAuth)
+
+    if (!_.isEmpty(authToken) && !config.headers.noAuth)
       config.headers.Authorization = authToken
 
     config.headers['Content-Type'] = 'application/json'

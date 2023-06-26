@@ -7,9 +7,13 @@ import generatedRoutes from '~pages'
 import { filePathsToTree } from '~/libs/files'
 
 const store = useLocaleStore()
-// const route = useRoute()
+const route: any = useRoute()
 
 const { locale, localeArray } = storeToRefs(store)
+const { childPort, tg } = projectConfig
+
+const tgServer = 'http://localhost:8081'
+const localTgServer = `http://localhost:${childPort}`
 
 const page = reactive({ tips: false })
 
@@ -18,32 +22,45 @@ const settings = reactive({
   show: false,
   columns: [
     {
-      title: '过滤系统菜单',
-      key: 'system',
-      group: '系统',
-      renderForm: {
-        type: 'i-switch',
-      },
-    },
-    {
       title: '开启天工',
-      group: '天工',
       key: 'open',
       renderForm: {
         type: 'i-switch',
       },
     },
-    {
-      title: '项目id',
-      key: 'project_id',
-      showForm(params: any) {
-        return params.value.open
-      },
-    },
+    // {
+    //   title: '项目匹配',
+    //   key: 'project_id',
+    //   showForm(params: any) {
+    //     return params.value.open
+    //   },
+    //   renderForm() {
+    //     return <pro-select request={() => {
+    //       return axios.get(`${tgServer}/api/projects`, { headers: { aa: 'Aa', Authorization: tg.jwt, noAuth: true } })
+    //     }} map={{ titlePath: 'title', valuePath: 'uuid', dataPath: 'data.rows' }}></pro-select>
+    //   },
+    // },
   ],
   form: { ...projectConfig.tg, show: false, src: '' },
 })
-
+// 新增页面
+const addNew = reactive({
+  show: false,
+  columns: [{
+    title: '代码',
+    key: 'uuid',
+    rules: [
+      {
+        required: true,
+        message: '代码必填',
+      },
+    ],
+  }, {
+    title: '名称',
+    key: 'title',
+  }],
+  form: {},
+})
 // 获取路由树
 const routes: any = filePathsToTree(generatedRoutes)
 
@@ -76,21 +93,16 @@ async function auth() {
 function tgToggle() {
   const { form } = settings
   form.show = !form.show
-  if (settings.form.show)
-    form.src = 'http://localhost:8081/#/build?project_id=b4b1f7b3d8a54f09a0a6d466a4fa5222&page_id=1a6a731647454f2d9ce7f6ee7dfa3a75&local=true'
-    // form.src
-    // = 'https://work.ihotel.cn/login?redirect=http://192.168.0.38:8989/#/build?service=TG&project_id=cce2b795d63e44bca54bd1c6e58d0fec&page_id=1a6a731647454f2d9ce7f6ee7dfa3a75&local=true'
-
-  // axios.post('/__tg_createPage', { viewPath: '/pages/test3.vue', code: '<template><pro-table v-bind="config" />/template>' })
+  if (settings.form.show) {
+    const { name } = route
+    form.src = `${tgServer}/#/build?project_id=${tg.project_id}&page_id=${name}&local=true&port=${childPort}`
+  }
 }
 // 保存天工配置
 
 async function saveTGConfig() {
-  const res = await axios.post('/__tg_tgConfig', settings.form)
+  const res = await axios.post(`${localTgServer}/saveTGConfig`, settings.form)
   console.log(res)
-}
-async function openAddNew() {
-
 }
 </script>
 
@@ -99,7 +111,7 @@ async function openAddNew() {
     <Layout>
       <Sider class="vh" hide-trigger collapsible :collapsed-width="78">
         <InfiniteMenu :menu-list="routes" />
-        <div v-if="settings.form.open" mt-2 border-dashed color-white text-center py-2 mx-3 cursor-pointer @click="openAddNew">
+        <div v-if="settings.form.open" mt-2 border-dashed color-white text-center py-2 mx-3 cursor-pointer @click="addNew.form = {};addNew.show = true;">
           新增页面
         </div>
       </Sider>
@@ -136,16 +148,12 @@ async function openAddNew() {
         </Content>
       </Layout>
     </Layout>
-    <Modal v-model="settings.show" title="全局项目配置" :footer-hide="true" @on-cancel="saveTGConfig">
-      <div>
-        <!-- <Steps :current="1">
-          <Step title="已完成" content="这里是该步骤的描述信息" />
-          <Step title="进行中" content="这里是该步骤的描述信息" />
-          <Step title="待进行" content="这里是该步骤的描述信息" />
-          <Step title="待进行" content="这里是该步骤的描述信息" />
-        </Steps> -->
-        <pro-form v-model="settings.form" :columns="settings.columns" />
-      </div>
+    <Modal v-model="settings.show" :width="tg.jwt && tg.project_id ? 500 : 1200" title="全局项目配置" :footer-hide="true" @on-cancel="saveTGConfig">
+      <pro-form v-if="tg.jwt && tg.project_id" v-model="settings.form" :columns="settings.columns" />
+      <iframe v-else :src="`${tgServer}/#/login?local=true&port=${childPort}`" class="iframe" />
+    </Modal>
+    <Modal v-model="addNew.show" title="新增页面">
+      <pro-form v-if="addNew.show" v-model="addNew.form" :columns="addNew.columns" :label-width="70" />
     </Modal>
     <Modal v-model="page.tips">
       <div>
@@ -169,6 +177,11 @@ async function openAddNew() {
 </template>
 
 <style scoped lang="less">
+.iframe{
+  width: 100%;
+  min-height: 550px;
+  border: none;
+}
 .layout {
   background: #f5f7f9;
   position: relative;
