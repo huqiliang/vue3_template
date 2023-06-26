@@ -12,7 +12,7 @@ export async function createPage(options) {
     singleQuote: true,
     printWidth: 300,
     trailingComma: 'none',
-    arrowParens: 'avoid',
+    arrowParens: 'avoid'
   })
   // 文件名
   const fname = `${options.name || 'demo'}.vue`
@@ -26,13 +26,8 @@ export async function createPage(options) {
   // }
   try {
     await saveFile(file, content)
-  }
-  catch (err) {
+    await $`npx eslint --fix ${file}`
+  } catch (err) {
     console.log(err.stack)
   }
-  await $`npx eslint --fix ${file}`
-}
-
-export function changeProjectConfig() {
-
 }

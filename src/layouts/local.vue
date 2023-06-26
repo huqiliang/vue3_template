@@ -108,6 +108,14 @@ async function saveTGConfig() {
     console.log(res)
   }
 }
+
+// 保存新建页面
+
+async function addNewHandle() {
+  console.log(addNew.form)
+  const res = await axios.post(`${localTgServer}/saveNew`, addNew.form)
+  console.log(res)
+}
 </script>
 
 <template>
@@ -156,7 +164,7 @@ async function saveTGConfig() {
       <pro-form v-if="tg.jwt && tg.project_id" v-model="settings.form" :columns="settings.columns" />
       <iframe v-else :src="`${tgServer}/#/login?local=true&port=${childPort}`" class="iframe" />
     </Modal>
-    <Modal v-model="addNew.show" title="新增页面">
+    <Modal v-model="addNew.show" title="新增页面" @on-ok="addNewHandle">
       <pro-form v-if="addNew.show" v-model="addNew.form" :columns="addNew.columns" :label-width="70" />
     </Modal>
     <Modal v-model="page.tips">

@@ -114,7 +114,7 @@ export default defineConfig(({ mode }) => {
       child_process({
         name: 'tg-local-server',
         command: ['node', './vite/tg/app.js'],
-        watch: ['project.config.json'],
+        watch: ['vite/tg/*'],
       }),
     ],
     build: {

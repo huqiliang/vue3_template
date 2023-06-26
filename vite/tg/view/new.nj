@@ -2,13 +2,12 @@
 defineOptions({
   name: '{{ page.uuid }}',
 })
-const config = reactive(
-  {{ config.props | dump | safe}}
-)
 </script>
 
 <template>
-  <{{ config.name }} v-bind="config" />
+  <div>
+    页面生成 - code:{{ page.uuid }},title:{{ page.title }}
+  </div>
 </template>
 
 <route lang="yaml">

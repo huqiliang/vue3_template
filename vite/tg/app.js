@@ -33,13 +33,21 @@ function changeJson(key, value) {
 await changeJson('childPort', port)
 
 app.get('/', (req, res) => {
-  res.send('Hello World 2222!')
+  res.send('Hello World!')
 })
 
 app.post('/saveLocal', async (req, res) => {
   const config = await parseJson(req)
   const code = nunjucks.render(join('./vite/tg/view/tpl.nj'), { config })
   createPage({ code })
+  res.send({ code: 0 })
+})
+
+app.post('/saveNew', async (req, res) => {
+  const page = await parseJson(req)
+  const { uuid } = page
+  const code = nunjucks.render(join('./vite/tg/view/new.nj'), { page })
+  createPage({ code, name: uuid })
   res.send({ code: 0 })
 })
 
