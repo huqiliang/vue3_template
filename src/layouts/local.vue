@@ -87,7 +87,7 @@ function tgToggle() {
   form.show = !form.show
   if (settings.form.show) {
     const { name } = route
-    tgSrc.value = `${tgServer}/#/build?project_id=${tg.project_id}&page_id=${name}&local=true&port=${childPort}`
+    tgSrc.value = `${tgServer}/#/build?project_id=${tg.project_id}&name=${name}&local=true&port=${childPort}&token=${tg.jwt}`
   }
 }
 // 保存天工配置

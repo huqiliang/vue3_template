@@ -37,9 +37,11 @@ app.get('/', (req, res) => {
 })
 
 app.post('/saveLocal', async (req, res) => {
-  const config = await parseJson(req)
-  const code = nunjucks.render(join('./vite/tg/view/tpl.nj'), { config })
-  createPage({ code })
+  const response = await parseJson(req)
+  console.log(response)
+  const { page } = response
+  const code = nunjucks.render(join('./vite/tg/view/tpl.nj'), response)
+  createPage({ code, name: page.name })
   res.send({ code: 0 })
 })
 
@@ -47,7 +49,7 @@ app.post('/saveNew', async (req, res) => {
   const page = await parseJson(req)
   const { name } = page
   // 去天工创建页面
-  // const tg = await axios.post()
+  // const tg = await axios.post('')
 
   const code = nunjucks.render(join('./vite/tg/view/new.nj'), { page })
   createPage({ code, name: uuid })

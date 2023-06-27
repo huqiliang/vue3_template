@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineOptions({
-  name: '{{ page.uuid }}',
+  name: '{{ page.name }}',
 })
 const config = reactive(
   {{ config.props | dump | safe}}
@@ -13,5 +13,5 @@ const config = reactive(
 
 <route lang="yaml">
 meta:
-  title: {{ page.title }}
+  title: {{ page.title or page.name}}
 </route>
