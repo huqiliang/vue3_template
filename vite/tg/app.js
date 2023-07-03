@@ -38,21 +38,17 @@ app.get('/', (req, res) => {
 
 app.post('/saveLocal', async (req, res) => {
   const response = await parseJson(req)
-  console.log(response)
-  const { page } = response
-  const code = nunjucks.render(join('./vite/tg/view/tpl.nj'), response)
+  const { page, config } = response;
+  const code = nunjucks.render(join('./vite/tg/view/tpl.nj'), { config, page })
   createPage({ code, name: page.name })
   res.send({ code: 0 })
 })
 
 app.post('/saveNew', async (req, res) => {
   const page = await parseJson(req)
-  const { name } = page
-  // 去天工创建页面
-  // const tg = await axios.post('')
-
+  // const { name, title } = page
   const code = nunjucks.render(join('./vite/tg/view/new.nj'), { page })
-  createPage({ code, name: uuid })
+  createPage({ code, name })
   res.send({ code: 0 })
 })
 

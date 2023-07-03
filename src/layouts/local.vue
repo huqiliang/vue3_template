@@ -10,9 +10,9 @@ const store = useLocaleStore()
 const route: any = useRoute()
 
 const { locale, localeArray } = storeToRefs(store)
-const { childPort, tg } = projectConfig
+const { childPort, tg }: any = projectConfig
 
-const tgServer = 'http://localhost:8081'
+const { server: tgServer } = tg
 const localTgServer = `http://localhost:${childPort}`
 
 const page = reactive({ tips: false })
@@ -104,8 +104,22 @@ async function saveTGConfig() {
 
 async function addNewHandle() {
   console.log(addNew.form)
+  const { project_id, jwt } = tg
+  const { name, title }: any = addNew.form
+  const tgRes = await axios.post(`${tgServer}/api/pages`, {
+    title,
+    project_id,
+    name,
+  }, {
+    headers: {
+      noAuth: true,
+      Authorization: `Bearer ${jwt}`,
+    },
+  })
+  console.log(tgRes)
   const res = await axios.post(`${localTgServer}/saveNew`, addNew.form)
-  console.log(res)
+  if (tgRes && res)
+    Message.success({ content: '新建成功' })
 }
 </script>
 

@@ -3,12 +3,12 @@ defineOptions({
   name: '{{ page.name }}',
 })
 const config = reactive(
-  {{ config.props | dump | safe}}
+  {{ config.props | dump | safe }}
 )
 </script>
 
 <template>
-  <{{ config.name }} v-bind="config" />
+  <{{ config.name or 'pro-table' }} v-bind="config" />
 </template>
 
 <route lang="yaml">
