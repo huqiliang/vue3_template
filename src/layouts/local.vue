@@ -35,7 +35,10 @@ const settings = reactive({
 const tgOpen = computed(() => {
   return settings.form.jwt && settings.form.project_id && settings.form.open
 })
-const tgSrc = ref('')
+const tgSrc = computed(() => {
+  const { name } = route
+  return `${tgServer}/?time=${new Date().getTime()}/#/build?project_id=${tg.project_id}&name=${name}&local=true&port=${childPort}&token=${tg.jwt}`
+})
 // 新增页面
 const addNew = reactive({
   show: false,
@@ -89,10 +92,6 @@ async function auth() {
 function tgToggle() {
   const { form } = settings
   form.show = !form.show
-  if (settings.form.show) {
-    const { name } = route
-    tgSrc.value = `${tgServer}/#/build?project_id=${tg.project_id}&name=${name}&local=true&port=${childPort}&token=${tg.jwt}`
-  }
 }
 // 保存天工配置
 
