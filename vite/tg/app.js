@@ -46,7 +46,7 @@ app.post('/saveLocal', async (req, res) => {
 
 app.post('/saveNew', async (req, res) => {
   const page = await parseJson(req)
-  // const { name, title } = page
+  const { name, title } = page
   const code = nunjucks.render(join('./vite/tg/view/new.nj'), { page })
   createPage({ code, name })
   res.send({ code: 0 })

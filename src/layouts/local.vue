@@ -103,23 +103,27 @@ async function saveTGConfig() {
 // 保存新建页面
 
 async function addNewHandle() {
-  console.log(addNew.form)
   const { project_id, jwt } = tg
   const { name, title }: any = addNew.form
-  const tgRes = await axios.post(`${tgServer}/api/pages`, {
+  const tgRes: any = await axios.post(`${tgServer}/api/pages`, {
     title,
     project_id,
     name,
   }, {
     headers: {
-      noAuth: true,
+      noauth: true,
+      nomsg: true,
       Authorization: `Bearer ${jwt}`,
     },
   })
-  console.log(tgRes)
-  const res = await axios.post(`${localTgServer}/saveNew`, addNew.form)
-  if (tgRes && res)
-    Message.success({ content: '新建成功' })
+  if (tgRes && tgRes.code === 0) {
+    const res = await axios.post(`${localTgServer}/saveNew`, addNew.form)
+    if (res)
+      Message.success({ content: '新建成功' })
+  }
+  else {
+    Message.error({ content: '页面代码重复,请修改' })
+  }
 }
 </script>
 
@@ -128,7 +132,7 @@ async function addNewHandle() {
     <Layout>
       <Sider class="vh" hide-trigger collapsible :collapsed-width="78">
         <InfiniteMenu :menu-list="routes" />
-        <div v-if="tgOpen" mt-2 border-dashed color-white text-center py-2 mx-3 cursor-pointer @click="addNew.form = {};addNew.show = true;">
+        <div mt-2 border-dashed color-white text-center py-2 mx-3 cursor-pointer @click="addNew.form = {};addNew.show = true;">
           新增页面
         </div>
       </Sider>
