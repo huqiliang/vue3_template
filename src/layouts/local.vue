@@ -105,24 +105,34 @@ async function saveTGConfig() {
 async function addNewHandle() {
   const { project_id, jwt } = tg
   const { name, title }: any = addNew.form
-  const tgRes: any = await axios.post(`${tgServer}/api/pages`, {
-    title,
-    project_id,
-    name,
-  }, {
-    headers: {
-      noauth: true,
-      nomsg: true,
-      Authorization: `Bearer ${jwt}`,
-    },
-  })
-  if (tgRes && tgRes.code === 0) {
+  let tgRes: any
+  if (tgOpen.value) {
+    tgRes = await axios.post(`${tgServer}/api/pages`, {
+      title,
+      project_id,
+      name,
+    }, {
+      headers: {
+        noauth: true,
+        nomsg: true,
+        Authorization: `Bearer ${jwt}`,
+      },
+    })
+    if (tgRes && tgRes.code === 0)
+      localCreate()
+    else
+      Message.error({ content: '页面代码重复,请修改' })
+  }
+  else {
+    localCreate()
+  }
+
+  async function localCreate() {
     const res = await axios.post(`${localTgServer}/saveNew`, addNew.form)
     if (res)
       Message.success({ content: '新建成功' })
-  }
-  else {
-    Message.error({ content: '页面代码重复,请修改' })
+    else
+      Message.error({ content: '新建失败' })
   }
 }
 </script>

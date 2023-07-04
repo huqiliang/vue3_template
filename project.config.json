@@ -4,6 +4,7 @@
   "childPort": 8989,
   "tg": {
     "open": true,
+    "server": "http://192.168.0.85:8989",
     "jwt": "",
     "project_id": ""
   }
