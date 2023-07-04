@@ -1,7 +1,7 @@
 {
   "appCode": "${appCode}",
   "hideSystemMenu": false,
-  "childPort": 52092,
+  "childPort": 8989,
   "tg": {
     "open": true,
     "server": "http://192.168.0.85:8989",
