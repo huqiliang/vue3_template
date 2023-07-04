@@ -16,6 +16,7 @@ const { server: tgServer } = tg
 const localTgServer = `http://localhost:${childPort}`
 
 const page = reactive({ tips: false })
+const loading = ref(true)
 
 // 全局设置配置
 const settings = reactive({
@@ -38,19 +39,22 @@ const tgSrc = ref('')
 // 新增页面
 const addNew = reactive({
   show: false,
-  columns: [{
-    title: '代码',
-    key: 'name',
-    rules: [
-      {
-        required: true,
-        message: '代码必填',
-      },
-    ],
-  }, {
-    title: '名称',
-    key: 'title',
-  }],
+  columns: [
+    {
+      title: '代码',
+      key: 'name',
+      rules: [
+        {
+          required: true,
+          message: '代码必填',
+        },
+      ],
+    },
+    {
+      title: '名称',
+      key: 'title',
+    },
+  ],
   form: {},
 })
 // 获取路由树
@@ -107,21 +111,33 @@ async function addNewHandle() {
   const { name, title }: any = addNew.form
   let tgRes: any
   if (tgOpen.value) {
-    tgRes = await axios.post(`${tgServer}/api/pages`, {
-      title,
-      project_id,
-      name,
-    }, {
-      headers: {
-        noauth: true,
-        nomsg: true,
-        Authorization: `Bearer ${jwt}`,
+    tgRes = await axios.post(
+      `${tgServer}/api/pages`,
+      {
+        title,
+        project_id,
+        name,
       },
-    })
-    if (tgRes && tgRes.code === 0)
+      {
+        headers: {
+          noauth: true,
+          nomsg: true,
+          Authorization: `Bearer ${jwt}`,
+        },
+      },
+    )
+    if (tgRes && tgRes.code === 0) {
       localCreate()
-    else
+    }
+    else {
+      setTimeout(() => {
+        loading.value = false // 改变loading状态
+        nextTick(() => {
+          loading.value = true
+        })
+      })
       Message.error({ content: '页面代码重复,请修改' })
+    }
   }
   else {
     localCreate()
@@ -131,8 +147,7 @@ async function addNewHandle() {
     const res = await axios.post(`${localTgServer}/saveNew`, addNew.form)
     if (res)
       Message.success({ content: '新建成功' })
-    else
-      Message.error({ content: '新建失败' })
+    else Message.error({ content: '新建失败' })
   }
 }
 </script>
@@ -142,13 +157,28 @@ async function addNewHandle() {
     <Layout>
       <Sider class="vh" hide-trigger collapsible :collapsed-width="78">
         <InfiniteMenu :menu-list="routes" />
-        <div mt-2 border-dashed color-white text-center py-2 mx-3 cursor-pointer @click="addNew.form = {};addNew.show = true;">
+        <div
+          mt-2
+          border-dashed
+          color-white
+          text-center
+          py-2
+          mx-3
+          cursor-pointer
+          @click="
+            addNew.form = {};
+            addNew.show = true;
+          "
+        >
           新增页面
         </div>
       </Sider>
       <Layout>
-        <Header class="layout-header-bar" style="padding:0">
-          <div class="flex items-center justify-between px-5" :class="settings.form.show && tgOpen ? 'bg-yellow-200' : ''">
+        <Header class="layout-header-bar" style="padding: 0">
+          <div
+            class="flex items-center justify-between px-5"
+            :class="settings.form.show && tgOpen ? 'bg-yellow-200' : ''"
+          >
             <div>
               <Button class="mr5" type="success" @click="auth">
                 授权
@@ -174,17 +204,45 @@ async function addNewHandle() {
           </div>
         </Header>
         <Content id="#app" p-5>
-          <iframe v-if="tgOpen && settings.form.show" class="iframe" :src="tgSrc" />
+          <iframe
+            v-if="tgOpen && settings.form.show"
+            class="iframe"
+            :src="tgSrc"
+          />
           <router-view v-else />
         </Content>
       </Layout>
     </Layout>
-    <Modal v-model="settings.show" :width="tg.jwt && tg.project_id ? 500 : 1200" title="全局项目配置" :footer-hide="true" @on-cancel="saveTGConfig">
-      <pro-form v-if="tg.jwt && tg.project_id" v-model="settings.form" :columns="settings.columns" />
-      <iframe v-else :src="`${tgServer}/#/login?local=true&port=${childPort}`" class="iframe" />
+    <Modal
+      v-model="settings.show"
+      :width="tg.jwt && tg.project_id ? 500 : 1200"
+      title="全局项目配置"
+      :footer-hide="true"
+      @on-cancel="saveTGConfig"
+    >
+      <pro-form
+        v-if="tg.jwt && tg.project_id"
+        v-model="settings.form"
+        :columns="settings.columns"
+      />
+      <iframe
+        v-else
+        :src="`${tgServer}/#/login?local=true&port=${childPort}`"
+        class="iframe"
+      />
     </Modal>
-    <Modal v-model="addNew.show" title="新增页面" @on-ok="addNewHandle">
-      <pro-form v-if="addNew.show" v-model="addNew.form" :columns="addNew.columns" :label-width="70" />
+    <Modal
+      v-model="addNew.show"
+      title="新增页面"
+      :loading="loading"
+      @on-ok="addNewHandle"
+    >
+      <pro-form
+        v-if="addNew.show"
+        v-model="addNew.form"
+        :columns="addNew.columns"
+        :label-width="70"
+      />
     </Modal>
     <Modal v-model="page.tips">
       <div>
@@ -208,7 +266,7 @@ async function addNewHandle() {
 </template>
 
 <style scoped lang="less">
-.iframe{
+.iframe {
   width: 100%;
   min-height: 550px;
   border: none;
