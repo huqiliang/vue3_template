@@ -1,0 +1,17 @@
+<script setup lang="ts">
+defineOptions({
+  name: '{{ page.name }}',
+})
+const config = reactive(
+  {{ config.props | dump | safe }}
+)
+</script>
+
+<template>
+  <{{ config.name or 'pro-table' }} v-bind="config" />
+</template>
+
+<route lang="yaml">
+meta:
+  title: {{ page.title or page.name}}
+</route>

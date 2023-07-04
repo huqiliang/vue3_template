@@ -14,15 +14,19 @@ import Unocss from 'unocss/vite'
 import VueMacros from 'unplugin-vue-macros/vite'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import removeConsole from 'vite-plugin-remove-console'
+import { child_process } from 'vite-plugin-child-process'
+import chalk from 'chalk'
+import dayjs from 'dayjs'
 
-import pkg from './package.json'
+// import tg from './vite/tg'
 
-const prefixDir = pkg.appCode.includes('$') ? 'appCode' : pkg.appCode
+import project from './project.config.json'
+
+const prefixDir = project.appCode.includes('$') ? 'appCode' : project.appCode
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, `${process.cwd()}/env`)
-  console.log(env)
-
+  console.log(`${chalk.grey(dayjs().format('HH:MM:DD'))} ${chalk.blue('[环境]')}${chalk.green(` 模式:${env.VITE_MODE} 布局:${env.VITE_LAYOUT}`)}`)
   return {
     base: `/${prefixDir}/`,
     envDir: 'env',
@@ -38,6 +42,9 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
         },
       },
+      // watch: {
+      //   ignored: ['**/project.config.json'], // 忽略对project.config.json的监听
+      // },
     },
     resolve: {
       alias: {
@@ -59,7 +66,7 @@ export default defineConfig(({ mode }) => {
       vueJsx(),
       // https://github.com/hannoeru/vite-plugin-pages
       Pages({
-        extensions: ['vue', 'md'],
+        extensions: ['vue'],
       }),
 
       // https://github.com/JohnCampionJr/vite-plugin-vue-layouts
@@ -103,6 +110,12 @@ export default defineConfig(({ mode }) => {
         toggleButtonVisibility: 'never',
       }),
       mode === 'production' ? removeConsole() : null,
+      // tg(),
+      child_process({
+        name: 'tg-local-server',
+        command: ['node', './vite/tg/app.js'],
+        watch: ['vite/tg/*'],
+      }),
     ],
     build: {
       minify: mode !== 'development',

@@ -5,8 +5,7 @@ defineOptions({
 </script>
 
 <template>
-  <div>首页</div>
-  <div u-carbon-align-vertical-bottom inline-block />
+  <div>首页 -- dashbord</div>
 </template>
 
 <route lang="yaml">
