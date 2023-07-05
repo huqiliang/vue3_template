@@ -5,12 +5,10 @@ defineOptions({
 const config = reactive(
   {{ config.props | dump | safe }}
 )
-const {{ page.name }} = reactive({})
-
 </script>
 
 <template>
-  <{{ config.name or 'pro-table' }} v-bind="config" v-model="{{ page.name }}"/>
+  <{{ config.name or 'pro-table' }} v-bind="config"/>
 </template>
 
 <route lang="yaml">
