@@ -9,5 +9,4 @@ node_modules
 *.log
 cypress/downloads
 pnpm-lock.yaml
-project.config.json
 vite/*
