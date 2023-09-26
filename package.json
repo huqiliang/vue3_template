@@ -5,7 +5,7 @@
   "packageManager": "pnpm@7.32.2",
   "scripts": {
     "build": "vite build",
-    "dev": "VITE_LAYOUT='local' vite --open",
+    "dev": "vite --open --mode native",
     "dev-prod": "vite --open",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -14,8 +14,7 @@
     "test:e2e": "cypress open",
     "test:unit": "vitest",
     "typecheck": "vue-tsc --noEmit",
-    "up": "taze major -I",
-    "postinstall": "npx simple-git-hooks"
+    "up": "taze major -I"
   },
   "dependencies": {
     "@unocss/reset": "^0.51.6",
@@ -50,14 +49,12 @@
     "execa": "^7.1.1",
     "express": "^4.18.2",
     "https-localhost": "^4.7.1",
-    "lint-staged": "^13.2.1",
     "nunjucks": "^3.2.4",
     "pnpm": "^7.32.2",
     "prettier": "^2.8.8",
     "prisma": "^4.15.0",
     "serve": "^14.2.0",
     "shiki": "^0.14.1",
-    "simple-git-hooks": "^2.8.1",
     "taze": "^0.9.1",
     "typescript": "^5.0.4",
     "unocss": "^0.51.6",
@@ -74,11 +71,5 @@
     "vite-plugin-vue-layouts": "^0.8.0",
     "vitest": "^0.30.1",
     "vue-tsc": "^1.4.4"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged"
-  },
-  "lint-staged": {
-    "*": "eslint --fix"
   }
 }
