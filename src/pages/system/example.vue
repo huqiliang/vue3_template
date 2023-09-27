@@ -296,6 +296,24 @@ export default {
                 method: 'DELETE',
                 keys: ['id'],
               },
+              {
+                title: '自定义渲染',
+                render() {
+                  return (
+                    <Poptip
+                      confirm
+                      title="是否删除?"
+                      onOnOk={() => {
+                        alert('你点了是')
+                      }}
+                      ok-text="是"
+                      cancel-text="否"
+                    >
+                      <a>自定义渲染</a>
+                    </Poptip>
+                  )
+                },
+              },
             ],
           },
         ],
