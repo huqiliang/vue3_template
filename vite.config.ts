@@ -119,7 +119,7 @@ export default defineConfig(({ mode }) => {
     ],
     build: {
       minify: mode !== 'development',
-      sourcemap: mode !== 'development',
+      sourcemap: mode === 'development',
       outDir: `dist/${prefixDir}`,
     },
     // https://github.com/vitest-dev/vitest
