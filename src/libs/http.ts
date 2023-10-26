@@ -14,12 +14,13 @@ axios.interceptors.request.use(
     const authToken = localStorage.getItem('token')
     if (!_.isEmpty(authToken) && !config.headers.noauth)
       config.headers.Authorization = authToken
-
-    config.headers['Content-Type'] = 'application/json'
+    if (config.method === 'get')
+      config.data = { unused: 0 } // 解决 get 请求添加不上Content-Type
+    config.headers['Content-type'] = 'application/json;charset=UTF-8'
     // 如果有current，就替换成firstResult 请根据实际情况修改
     const params = config.params
     if (params) {
-      if (Object.prototype.hasOwnProperty.call(params, 'current')) {
+      if (Object.prototype.hasOwnProperty.call(params, 'current')) { // 替换分页形式
         config.params.firstResult = params.current
         delete config.params.current
       }
