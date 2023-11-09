@@ -1,15 +1,3 @@
-<p align='center'>
-<a href="https://vitesse.netlify.app/">在线 Demo</a>
-</p>
-
-<br>
-
-<p align='center'>
-<a href="https://github.com/antfu/vitesse/blob/main/README.md">English</a> | <b>简体中文</b>
-</p>
-
-<br>
-
 ## 特性
 
 - ⚡️ [Vue 3](https://github.com/vuejs/core), [Vite](https://github.com/vitejs/vite), [pnpm](https://pnpm.io/), [esbuild](https://github.com/evanw/esbuild) - 就是快！
@@ -34,7 +22,7 @@
 
 - 📥 [API 自动加载](https://github.com/antfu/unplugin-auto-import) - 直接使用 Composition API 无需引入
 
-- 🦾 TypeScript, 当然
+- 🦾 TypeScript
 
 
 <br>
