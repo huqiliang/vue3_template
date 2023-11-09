@@ -22,8 +22,6 @@
 
 - 📑 [布局系统](./src/layouts)
 
-- 📲 [PWA](https://github.com/antfu/vite-plugin-pwa)
-
 - 🎨 [UnoCSS](https://github.com/unocss/unocss) - 高性能且极具灵活性的即时原子化 CSS 引擎
 
 - 😃 [各种图标集为你所用](https://github.com/antfu/unocss/tree/main/packages/preset-icons)
@@ -36,15 +34,8 @@
 
 - 📥 [API 自动加载](https://github.com/antfu/unplugin-auto-import) - 直接使用 Composition API 无需引入
 
-- 🖨 使用 [vite-ssg](https://github.com/antfu/vite-ssg) 进行服务端生成 (SSG)
-
-- 🦔 使用 [critters](https://github.com/GoogleChromeLabs/critters) 的生成关键 CSS
-
 - 🦾 TypeScript, 当然
 
-- ⚙️ 结合 [GitHub Actions](https://github.com/features/actions)，使用 [Vitest](https://github.com/vitest-dev/vitest) 进行单元测试, [Cypress](https://cypress.io/) 进行 E2E 测试
-
-- ☁️ 零配置部署 Netlify
 
 <br>
 
@@ -52,6 +43,8 @@
 
 ### UI 框架
 
+- [Iview](https://www.iviewui.com/view-ui-plus/guide/introduce) - 高质量vue前端UI组件库
+- [Pro_Iview](http://192.168.0.85:8080/pro_iview_doc/guide/pro_iview/pro_table.html#%E6%A6%82%E8%BF%B0) - 偏于快速开发的iview的高阶组件库
 - [UnoCSS](https://github.com/antfu/unocss) - 高性能且极具灵活性的即时原子化 CSS 引擎
 
 ### Icons
@@ -86,7 +79,6 @@
 - [Vitest](https://github.com/vitest-dev/vitest) - 基于 Vite 的单元测试框架
 - [Cypress](https://cypress.io/) - E2E 测试
 - [pnpm](https://pnpm.js.org/) - 快, 节省磁盘空间的包管理器
-- [`vite-ssg`](https://github.com/antfu/vite-ssg) - 服务端生成
   - [critters](https://github.com/GoogleChromeLabs/critters) - 关键 CSS 生成器
 - [Netlify](https://www.netlify.com/) - 零配置的部署
 - [VS Code 扩展](./.vscode/extensions.json)
@@ -96,29 +88,7 @@
   - [i18n Ally](https://marketplace.visualstudio.com/items?itemName=lokalise.i18n-ally) - 多合一的 I18n 支持
   - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 
-## 衍生项目
-
-由于这个模板的业务场景非常的局限，下面提供了一个精心策划的列表，列出了社区维护的具有不同偏好和功能集的衍生项目。也可以看看他们。当然也欢迎你 PR 提供自己的项目！
-
-###### 官方
-
-- [vitesse-lite](https://github.com/antfu/vitesse-lite) - Vitesse 的轻量版本
-- [vitesse-nuxt3](https://github.com/antfu/vitesse-nuxt3) - Vitesse 的 Nuxt 3 版本
-- [vitesse-nuxt-bridge](https://github.com/antfu/vitesse-nuxt-bridge) - Vitesse 的 Nuxt2 桥接版本
-- [vitesse-webext](https://github.com/antfu/vitesse-webext) - 开箱即用的浏览器扩展 vite 模板
-
 > Vitesse 需要 Node 版本 >=14.18
-
-## 清单
-
-使用此模板时，请尝试按照清单正确更新您自己的信息
-
-- [ ] 在 `LICENSE` 中改变作者名
-- [ ] 在 `App.vue` 中改变标题
-- [ ] 在 `vite.config.ts` 更改主机名
-- [ ] 在 `public` 目录下改变favicon
-- [ ] 移除 `.github` 文件夹中包含资助的信息
-- [ ] 整理 README 并删除路由
 
 紧接着, 享受吧 :)
 
@@ -126,7 +96,7 @@
 
 ### 开发
 
-只需要执行以下命令就可以在 http://localhost:3333 中看到
+只需要执行以下命令就可以在浏览器中看到
 
 ```bash
 pnpm dev
