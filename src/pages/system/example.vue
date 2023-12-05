@@ -151,9 +151,6 @@ export default {
                 width: '100%',
               },
             },
-            renderTable: (h, params) => {
-              return <span>{params.row.isAllow === 'F' ? '黑名单' : '白名单'}</span>
-            },
             key: 'createUser2',
           },
           {
@@ -431,7 +428,7 @@ export default {
         自定义指令:
       </div>
       <div>
-        <Button v-proClick="clickHandle" type="primary">
+        <Button v-click="clickHandle" type="primary">
           防重点击
         </Button>
       </div>
