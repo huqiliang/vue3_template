@@ -18,11 +18,11 @@ const childPort = config.childPort
 const port = await findUsablePort(childPort)
 if (port !== childPort) {
   // 如果端口被占用 换一个端口
-  console.log("端口已被使用 尝试更换");
+  console.log('端口已被使用 尝试更换')
   await changeJson('childPort', port)
 }
 
-function changeJson(key, value, json) {
+async function changeJson(key, value, json) {
   const data = fs.readFileSync(json || 'project.config.json', 'utf8') // 读取json文件
   let config = JSON.parse(data) // 将数据解析为json对象
   if (_.isObject(config[key])) {
@@ -30,7 +30,7 @@ function changeJson(key, value, json) {
   } else {
     config[key] = value
   }
-  const content = prettier.format(JSON.stringify(config), {
+  const content = await prettier.format(JSON.stringify(config), {
     parser: 'json'
   })
   return fs.promises.writeFile(json || 'project.config.json', content)

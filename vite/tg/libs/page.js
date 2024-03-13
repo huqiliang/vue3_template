@@ -6,7 +6,7 @@ import { saveFile } from './tools.js'
 // 创建文件
 export async function createPage(options) {
   // 格式化内容
-  const content = prettier.format(options.code, {
+  const content = await prettier.format(options.code, {
     parser: 'vue',
     semi: false,
     singleQuote: true,
