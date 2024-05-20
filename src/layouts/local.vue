@@ -1,10 +1,10 @@
 <script setup lang="tsx">
-import { Message } from "view-ui-plus";
-import axios from "axios";
-import { storeToRefs } from "pinia";
-import projectConfig from "../../project.config.json";
-import generatedRoutes from "~pages";
-import { filePathsToTree } from "~/libs/files";
+import { Message } from 'view-ui-plus';
+import axios from 'axios';
+import { storeToRefs } from 'pinia';
+import projectConfig from '../../project.config.json';
+import generatedRoutes from '~pages';
+import { filePathsToTree } from '~/libs/files';
 
 const store = useLocaleStore();
 const route: any = useRoute();
@@ -23,14 +23,14 @@ const settings = reactive({
   show: false,
   columns: [
     {
-      title: "开启天工",
-      key: "open",
+      title: '开启天工',
+      key: 'open',
       renderForm: {
-        type: "i-switch",
-      },
-    },
+        type: 'i-switch'
+      }
+    }
   ],
-  form: { ...projectConfig.tg, show: false },
+  form: { ...projectConfig.tg, show: false }
 });
 const tgOpen = computed(() => {
   return settings.form.jwt && settings.form.project_id && settings.form.open;
@@ -44,21 +44,21 @@ const addNew = reactive({
   show: false,
   columns: [
     {
-      title: "代码",
-      key: "name",
+      title: '代码',
+      key: 'name',
       rules: [
         {
           required: true,
-          message: "代码必填",
-        },
-      ],
+          message: '代码必填'
+        }
+      ]
     },
     {
-      title: "名称",
-      key: "title",
-    },
+      title: '名称',
+      key: 'title'
+    }
   ],
-  form: {},
+  form: {}
 });
 // 获取路由树
 const routes: any = filePathsToTree(generatedRoutes);
@@ -66,22 +66,22 @@ const routes: any = filePathsToTree(generatedRoutes);
 // UC授权
 async function auth() {
   const res: any = await axios({
-    url: "https://test.ihotel.cn/uc-web/sso/login",
-    method: "post",
+    url: 'https://test.ihotel.cn/uc-web/sso/login',
+    method: 'post',
     data: {
-      appCode: "",
-      orgCode: "GCBZG",
-      userCode: "GCBZG_ADMIN",
-      password: "e10adc3949ba59abbe56e057f20f883e",
+      appCode: '',
+      orgCode: 'GCBZG',
+      userCode: 'GCBZG_ADMIN',
+      password: 'e10adc3949ba59abbe56e057f20f883e'
     },
     headers: {
-      nomsg: true,
-    },
+      nomsg: true
+    }
   });
 
   if (res.success) {
-    localStorage.setItem("token", res.retVal.jwtToken);
-    Message.success({ content: "授权成功" });
+    localStorage.setItem('token', res.retVal.jwtToken);
+    Message.success({ content: '授权成功' });
   } else {
     page.tips = true;
   }
@@ -98,7 +98,7 @@ async function saveTGConfig() {
   if (tg.jwt && tg.project_id) {
     const { open } = settings.form;
     await axios.post(`${localTgServer}/saveTGConfig`, { open });
-    Message.success({ content: "设置成功 正在重启" });
+    Message.success({ content: '设置成功 正在重启' });
   }
 }
 
@@ -114,15 +114,15 @@ async function addNewHandle() {
       {
         title,
         project_id,
-        name,
+        name
       },
       {
         headers: {
           noauth: true,
           nomsg: true,
-          Authorization: `Bearer ${jwt}`,
-        },
-      },
+          Authorization: `Bearer ${jwt}`
+        }
+      }
     );
     if (tgRes && tgRes.code === 0) {
       localCreate();
@@ -133,7 +133,7 @@ async function addNewHandle() {
           loading.value = true;
         });
       });
-      Message.error({ content: "页面代码重复,请修改" });
+      Message.error({ content: '页面代码重复,请修改' });
     }
   } else {
     localCreate();
@@ -141,8 +141,8 @@ async function addNewHandle() {
 
   async function localCreate() {
     const res = await axios.post(`${localTgServer}/saveNew`, addNew.form);
-    if (res) Message.success({ content: "新建成功" });
-    else Message.error({ content: "新建失败" });
+    if (res) Message.success({ content: '新建成功' });
+    else Message.error({ content: '新建失败' });
   }
 }
 </script>
@@ -170,72 +170,29 @@ async function addNewHandle() {
       </Sider>
       <Layout>
         <Header class="layout-header-bar" style="padding: 0">
-          <div
-            class="flex items-center justify-between px-5"
-            :class="settings.form.show && tgOpen ? 'bg-yellow-200' : ''"
-          >
+          <div class="flex items-center justify-between px-5" :class="settings.form.show && tgOpen ? 'bg-yellow-200' : ''">
             <div>
               <Button class="mr5" type="success" @click="auth"> 授权 </Button>
-              <Button
-                v-if="tgOpen"
-                class="mr5"
-                :type="!settings.form.show ? 'default' : 'primary'"
-                @click="tgToggle"
-              >
-                天工
-              </Button>
+              <Button v-if="tgOpen" class="mr5" :type="!settings.form.show ? 'default' : 'primary'" @click="tgToggle"> 天工 </Button>
             </div>
             <div style="width: 120px" flex items-center>
               <pro-select v-model="locale" :list="localeArray" mr3 />
-              <Icon
-                type="ios-settings"
-                size="25"
-                cursor-pointer
-                @click="settings.show = true"
-              />
+              <Icon type="ios-settings" size="25" cursor-pointer @click="settings.show = true" />
             </div>
           </div>
         </Header>
         <Content id="#app" p-5>
-          <iframe
-            v-if="tgOpen && settings.form.show"
-            class="iframe"
-            :src="tgSrc"
-          />
+          <iframe v-if="tgOpen && settings.form.show" class="iframe" :src="tgSrc" />
           <router-view v-else />
         </Content>
       </Layout>
     </Layout>
-    <Modal
-      v-model="settings.show"
-      :width="tg.jwt && tg.project_id ? 500 : 1200"
-      title="全局项目配置"
-      :footer-hide="true"
-      @on-cancel="saveTGConfig"
-    >
-      <pro-form
-        v-if="tg.jwt && tg.project_id"
-        v-model="settings.form"
-        :columns="settings.columns"
-      />
-      <iframe
-        v-else
-        :src="`${tgServer}/#/login?local=true&port=${childPort}`"
-        class="iframe"
-      />
+    <Modal v-model="settings.show" :width="tg.jwt && tg.project_id ? 500 : 1200" title="全局项目配置" :footer-hide="true" @on-cancel="saveTGConfig">
+      <pro-form v-if="tg.jwt && tg.project_id" v-model="settings.form" :columns="settings.columns" />
+      <iframe v-else :src="`${tgServer}/#/login?local=true&port=${childPort}`" class="iframe" />
     </Modal>
-    <Modal
-      v-model="addNew.show"
-      title="新增页面"
-      :loading="loading"
-      @on-ok="addNewHandle"
-    >
-      <pro-form
-        v-if="addNew.show"
-        v-model="addNew.form"
-        :columns="addNew.columns"
-        :label-width="70"
-      />
+    <Modal v-model="addNew.show" title="新增页面" :loading="loading" @on-ok="addNewHandle">
+      <pro-form v-if="addNew.show" v-model="addNew.form" :columns="addNew.columns" :label-width="70" />
     </Modal>
     <Modal v-model="page.tips">
       <div>

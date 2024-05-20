@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const props = defineProps({
-  menuList: Array<any>,
+  menuList: Array<any>
 });
 const route = useRoute();
 const { menuList } = props;
@@ -9,10 +9,7 @@ const { menuList } = props;
 <template>
   <Menu width="auto" theme="dark" :active-name="route.path">
     <template v-for="item in menuList" :key="item.path">
-      <Submenu
-        v-if="item.children && item.children.length > 0"
-        :name="item.path"
-      >
+      <Submenu v-if="item.children && item.children.length > 0" :name="item.path">
         <template #title>
           {{ item.title || item.name }}
         </template>
