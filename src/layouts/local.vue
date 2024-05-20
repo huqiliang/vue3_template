@@ -1,114 +1,113 @@
 <script setup lang="tsx">
-import { Message } from 'view-ui-plus'
-import axios from 'axios'
-import { storeToRefs } from 'pinia'
-import projectConfig from '../../project.config.json'
-import generatedRoutes from '~pages'
-import { filePathsToTree } from '~/libs/files'
+import { Message } from "view-ui-plus";
+import axios from "axios";
+import { storeToRefs } from "pinia";
+import projectConfig from "../../project.config.json";
+import generatedRoutes from "~pages";
+import { filePathsToTree } from "~/libs/files";
 
-const store = useLocaleStore()
-const route: any = useRoute()
+const store = useLocaleStore();
+const route: any = useRoute();
 
-const { locale, localeArray } = storeToRefs(store)
-const { childPort, tg }: any = projectConfig
+const { locale, localeArray } = storeToRefs(store);
+const { childPort, tg }: any = projectConfig;
 
-const { server: tgServer } = tg
-const localTgServer = `http://localhost:${childPort}`
+const { server: tgServer } = tg;
+const localTgServer = `http://localhost:${childPort}`;
 
-const page = reactive({ tips: false })
-const loading = ref(true)
+const page = reactive({ tips: false });
+const loading = ref(true);
 
 // 全局设置配置
 const settings = reactive({
   show: false,
   columns: [
     {
-      title: '开启天工',
-      key: 'open',
+      title: "开启天工",
+      key: "open",
       renderForm: {
-        type: 'i-switch',
+        type: "i-switch",
       },
     },
   ],
   form: { ...projectConfig.tg, show: false },
-})
+});
 const tgOpen = computed(() => {
-  return settings.form.jwt && settings.form.project_id && settings.form.open
-})
+  return settings.form.jwt && settings.form.project_id && settings.form.open;
+});
 const tgSrc = computed(() => {
-  const { name } = route
-  return `${tgServer}/?time=${new Date().getTime()}/#/build?project_id=${tg.project_id}&name=${name}&local=true&port=${childPort}&token=${tg.jwt}`
-})
+  const { name } = route;
+  return `${tgServer}/?time=${new Date().getTime()}/#/build?project_id=${tg.project_id}&name=${name}&local=true&port=${childPort}&token=${tg.jwt}`;
+});
 // 新增页面
 const addNew = reactive({
   show: false,
   columns: [
     {
-      title: '代码',
-      key: 'name',
+      title: "代码",
+      key: "name",
       rules: [
         {
           required: true,
-          message: '代码必填',
+          message: "代码必填",
         },
       ],
     },
     {
-      title: '名称',
-      key: 'title',
+      title: "名称",
+      key: "title",
     },
   ],
   form: {},
-})
+});
 // 获取路由树
-const routes: any = filePathsToTree(generatedRoutes)
+const routes: any = filePathsToTree(generatedRoutes);
 
 // UC授权
 async function auth() {
   const res: any = await axios({
-    url: 'https://test.ihotel.cn/uc-web/sso/login',
-    method: 'post',
+    url: "https://test.ihotel.cn/uc-web/sso/login",
+    method: "post",
     data: {
-      appCode: '',
-      orgCode: 'GCBZG',
-      userCode: 'GCBZG_ADMIN',
-      password: 'e10adc3949ba59abbe56e057f20f883e',
+      appCode: "",
+      orgCode: "GCBZG",
+      userCode: "GCBZG_ADMIN",
+      password: "e10adc3949ba59abbe56e057f20f883e",
     },
     headers: {
       nomsg: true,
     },
-  })
+  });
 
   if (res.success) {
-    localStorage.setItem('token', res.retVal.jwtToken)
-    Message.success({ content: '授权成功' })
-  }
-  else {
-    page.tips = true
+    localStorage.setItem("token", res.retVal.jwtToken);
+    Message.success({ content: "授权成功" });
+  } else {
+    page.tips = true;
   }
 }
 
 // 天工
 function tgToggle() {
-  const { form } = settings
-  form.show = !form.show
+  const { form } = settings;
+  form.show = !form.show;
 }
 // 保存天工配置
 
 async function saveTGConfig() {
   if (tg.jwt && tg.project_id) {
-    const { open } = settings.form
-    await axios.post(`${localTgServer}/saveTGConfig`, { open })
-    Message.success({ content: '设置成功 正在重启' })
+    const { open } = settings.form;
+    await axios.post(`${localTgServer}/saveTGConfig`, { open });
+    Message.success({ content: "设置成功 正在重启" });
   }
 }
 
 // 保存新建页面
 
 async function addNewHandle() {
-  const { project_id, jwt } = tg
-  const { name, title }: any = addNew.form
-  let tgRes: any
+  const { project_id, jwt } = tg;
+  const { name, title }: any = addNew.form;
+  let tgRes: any;
   if (tgOpen.value) {
     tgRes = await axios.post(
       `${tgServer}/api/pages`,
@@ -124,29 +123,26 @@ async function addNewHandle() {
           Authorization: `Bearer ${jwt}`,
         },
       },
-    )
+    );
     if (tgRes && tgRes.code === 0) {
-      localCreate()
-    }
-    else {
+      localCreate();
+    } else {
       setTimeout(() => {
-        loading.value = false // 改变loading状态
+        loading.value = false; // 改变loading状态
         nextTick(() => {
-          loading.value = true
-        })
-      })
-      Message.error({ content: '页面代码重复,请修改' })
+          loading.value = true;
+        });
+      });
+      Message.error({ content: "页面代码重复,请修改" });
     }
-  }
-  else {
-    localCreate()
+  } else {
+    localCreate();
   }
 
   async function localCreate() {
-    const res = await axios.post(`${localTgServer}/saveNew`, addNew.form)
-    if (res)
-      Message.success({ content: '新建成功' })
-    else Message.error({ content: '新建失败' })
+    const res = await axios.post(`${localTgServer}/saveNew`, addNew.form);
+    if (res) Message.success({ content: "新建成功" });
+    else Message.error({ content: "新建失败" });
   }
 }
 </script>
@@ -179,9 +175,7 @@ async function addNewHandle() {
             :class="settings.form.show && tgOpen ? 'bg-yellow-200' : ''"
           >
             <div>
-              <Button class="mr5" type="success" @click="auth">
-                授权
-              </Button>
+              <Button class="mr5" type="success" @click="auth"> 授权 </Button>
               <Button
                 v-if="tgOpen"
                 class="mr5"
@@ -245,20 +239,14 @@ async function addNewHandle() {
     </Modal>
     <Modal v-model="page.tips">
       <div>
-        <p p-1>
-          自动登录失败,请按以下操作:
-        </p>
+        <p p-1>自动登录失败,请按以下操作:</p>
         <p p-1>
           1.请打开
           <a target="_blank" href="http://192.168.0.85:8180/sso"> 测试服 </a>
           登陆 账号请联系 - 基础研发部
         </p>
-        <p p-1>
-          2.打开 f12 查找任意接口 , 复制 header 中的 Authorization 的值
-        </p>
-        <p p-1>
-          3.在当前 url 后加入 ?token=复制的值 , 刷新即可
-        </p>
+        <p p-1>2.打开 f12 查找任意接口 , 复制 header 中的 Authorization 的值</p>
+        <p p-1>3.在当前 url 后加入 ?token=复制的值 , 刷新即可</p>
       </div>
     </Modal>
   </div>
@@ -270,11 +258,13 @@ async function addNewHandle() {
   min-height: 550px;
   border: none;
 }
+
 .layout {
   background: #f5f7f9;
   position: relative;
   min-height: 100vh;
   overflow: hidden;
+
   .iframe {
     position: relative;
     height: 100%;
@@ -283,13 +273,16 @@ async function addNewHandle() {
     display: block;
   }
 }
+
 .vh {
   min-height: 100vh;
 }
+
 .layout-header-bar {
   background: #fff;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
+
 .layout-logo-left {
   width: 90%;
   height: 30px;
@@ -297,12 +290,15 @@ async function addNewHandle() {
   border-radius: 3px;
   margin: 15px auto;
 }
+
 .menu-icon {
   transition: all 0.3s;
 }
+
 .rotate-icon {
   transform: rotate(-90deg);
 }
+
 .menu-item span {
   display: inline-block;
   overflow: hidden;
@@ -311,19 +307,26 @@ async function addNewHandle() {
   vertical-align: bottom;
   transition: width 0.2s ease 0.2s;
 }
+
 .menu-item i {
   transform: translateX(0px);
-  transition: font-size 0.2s ease, transform 0.2s ease;
+  transition:
+    font-size 0.2s ease,
+    transform 0.2s ease;
   vertical-align: middle;
   font-size: 16px;
 }
+
 .collapsed-menu span {
   width: 0px;
   transition: width 0.2s ease;
 }
+
 .collapsed-menu i {
   transform: translateX(5px);
-  transition: font-size 0.2s ease 0.2s, transform 0.2s ease 0.2s;
+  transition:
+    font-size 0.2s ease 0.2s,
+    transform 0.2s ease 0.2s;
   vertical-align: middle;
   font-size: 22px;
 }
