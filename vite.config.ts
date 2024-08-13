@@ -51,9 +51,6 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
         },
       },
-      // watch: {
-      //   ignored: ['**/project.config.json'], // 忽略对project.config.json的监听
-      // },
     },
     resolve: {
       alias: {

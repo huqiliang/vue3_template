@@ -1,6 +1,6 @@
 {
   "appCode": "${appCode}",
-  "hideSystemMenu": false,
+  "appName": "订单系统",
   "childPort": 8989,
   "tg": {
     "open": true,

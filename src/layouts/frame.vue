@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import NoFrame from './default.vue';
-
+import logo from '~/assets/images/logo.png';
 import { defineBasicLoader } from 'unplugin-vue-router/data-loaders/basic';
 import { getMenuList } from '~/api/menu';
 
@@ -11,12 +11,20 @@ const useUserData = defineBasicLoader('/', async (route) => {
 const { data, isLoading } = useUserData();
 
 const menuList: any = data;
+
+const isCollapsed = ref(false);
 </script>
 
 <template>
   <div class="layout">
     <Layout>
       <Sider class="vh" hide-trigger collapsible :collapsed-width="78">
+        <div class="app_header" v-show="!isCollapsed">
+          <div class="logo_box">
+            <img class="app_logo" :src="logo" />
+          </div>
+          <div class="system_name">测试系统</div>
+        </div>
         <div class="flex justify-center p-2" v-if="isLoading">
           <Spin></Spin>
         </div>
@@ -33,81 +41,66 @@ const menuList: any = data;
 </template>
 
 <style scoped lang="less">
-.iframe {
-  width: 100%;
-  min-height: 550px;
-  border: none;
-}
-
 .layout {
+  :deep(.ivu-menu-vertical .ivu-menu-item),
+  :deep(.ivu-menu-vertical .ivu-menu-submenu-title) {
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 40px;
+    line-height: 40px;
+    white-space: nowrap;
+    background: #00152c;
+    &:hover {
+      background: #00264f;
+    }
+  }
+  :deep(.ivu-layout-sider) {
+    background: #00152c;
+  }
+  :deep(.ivu-menu-dark.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu)),
+  :deep(.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title-active:not(.ivu-menu-submenu)) {
+    background: #2d8cf0 !important;
+    color: #fff;
+  }
+  :deep(.ivu-menu-dark) {
+    background: #00152c;
+  }
   background: #f5f7f9;
   position: relative;
   min-height: 100vh;
   overflow: hidden;
 
-  .iframe {
-    position: relative;
-    height: 100%;
-    width: 100%;
-    border: 1px dashed #ccc;
-    display: block;
+  .vh {
+    min-height: 100vh;
   }
-}
+  .app_header {
+    padding-left: 15px;
+    height: 62px;
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background: #00152c;
 
-.vh {
-  min-height: 100vh;
-}
-
-.layout-header-bar {
-  background: #fff;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-}
-
-.layout-logo-left {
-  width: 90%;
-  height: 30px;
-  background: #5b6270;
-  border-radius: 3px;
-  margin: 15px auto;
-}
-
-.menu-icon {
-  transition: all 0.3s;
-}
-
-.rotate-icon {
-  transform: rotate(-90deg);
-}
-
-.menu-item span {
-  display: inline-block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  vertical-align: bottom;
-  transition: width 0.2s ease 0.2s;
-}
-
-.menu-item i {
-  transform: translateX(0px);
-  transition:
-    font-size 0.2s ease,
-    transform 0.2s ease;
-  vertical-align: middle;
-  font-size: 16px;
-}
-
-.collapsed-menu span {
-  width: 0px;
-  transition: width 0.2s ease;
-}
-
-.collapsed-menu i {
-  transform: translateX(5px);
-  transition:
-    font-size 0.2s ease 0.2s,
-    transform 0.2s ease 0.2s;
-  vertical-align: middle;
-  font-size: 22px;
+    .logo_box {
+      height: 100%;
+      width: 50px;
+      // background: #ccc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .app_logo {
+      height: 32px;
+      width: 32px;
+      display: flex;
+      align-items: center;
+      background-repeat: no-repeat;
+    }
+    .system_name {
+      color: #fff;
+      font-size: 16px;
+    }
+  }
 }
 </style>
