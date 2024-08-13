@@ -1,22 +1,30 @@
-<script setup lang="ts">
+<script setup>
 const props = defineProps({
-  menuList: Array<any>
+  menuList: Array
 });
 const route = useRoute();
 const { menuList } = props;
+
+const layout = import.meta.env.VITE_LAYOUT;
+const getTitle = (item) => {
+  return item?.meta?.title || item?.title || item.name || item.path;
+};
+const getPath = (item) => {
+  return layout === 'native' ? item.name : item.path;
+};
 </script>
 
 <template>
   <Menu width="auto" theme="dark" :active-name="route.path">
     <template v-for="item in menuList" :key="item.path">
-      <Submenu v-if="item.children && item.children.length > 0" :name="item.path">
+      <Submenu v-if="item.children && item.children.length > 0" :name="getPath(item)">
         <template #title>
-          {{ item.title || item.name }}
+          {{ getTitle(item) }}
         </template>
         <InfiniteMenu :menu-list="item.children" />
       </Submenu>
-      <menu-item v-else :name="item.path" :to="item.path">
-        {{ item.title || item.name }}
+      <menu-item v-else :name="item.path" :to="getPath(item)">
+        {{ getTitle(item) }}
       </menu-item>
     </template>
   </Menu>

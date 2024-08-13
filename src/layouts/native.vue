@@ -3,8 +3,7 @@ import { Message } from 'view-ui-plus';
 import axios from 'axios';
 import { storeToRefs } from 'pinia';
 import projectConfig from '../../project.config.json';
-import generatedRoutes from '~pages';
-import { filePathsToTree } from '~/libs/files';
+import { routes } from 'vue-router/auto-routes';
 
 const store = useLocaleStore();
 const route: any = useRoute();
@@ -61,7 +60,6 @@ const addNew = reactive({
   form: {}
 });
 // 获取路由树
-const routes: any = filePathsToTree(generatedRoutes);
 
 // UC授权
 async function auth() {
@@ -72,7 +70,7 @@ async function auth() {
       appCode: '',
       orgCode: 'GCBZG',
       userCode: 'GCBZG_ADMIN',
-      password: 'e10adc3949ba59abbe56e057f20f883e'
+      password: 'f6af7afd01d4eb0dc5fe0a342cd6cee7'
     },
     headers: {
       nomsg: true
@@ -145,13 +143,16 @@ async function addNewHandle() {
     else Message.error({ content: '新建失败' });
   }
 }
+const menuList: any = routes;
+
+console.log(menuList);
 </script>
 
 <template>
   <div class="layout">
     <Layout>
       <Sider class="vh" hide-trigger collapsible :collapsed-width="78">
-        <InfiniteMenu :menu-list="routes" />
+        <InfiniteMenu :menu-list="menuList"></InfiniteMenu>
         <div
           mt-2
           border-dashed

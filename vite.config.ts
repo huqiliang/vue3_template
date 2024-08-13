@@ -3,22 +3,22 @@ import { defineConfig, loadEnv } from 'vite'
 
 // import Preview from 'vite-plugin-vue-component-preview'
 import Vue from '@vitejs/plugin-vue'
-import Pages from 'vite-plugin-pages'
+// import Pages from 'vite-plugin-pages'
 import Layouts from 'vite-plugin-vue-layouts'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import VueI18n from '@intlify/unplugin-vue-i18n/vite'
-import Inspect from 'vite-plugin-inspect'
-import Inspector from 'vite-plugin-vue-inspector'
+import VueDevTools from 'vite-plugin-vue-devtools'
 import Unocss from 'unocss/vite'
 import VueMacros from 'unplugin-vue-macros/vite'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import removeConsole from 'vite-plugin-remove-console'
 import { child_process } from 'vite-plugin-child-process'
+import VueRouter from 'unplugin-vue-router/vite'
+import { VueRouterAutoImports } from 'unplugin-vue-router'
 import chalk from 'chalk'
 import dayjs from 'dayjs'
-
-// import tg from './vite/tg'
+import _ from "lodash-es"
 
 import project from './project.config.json'
 
@@ -26,7 +26,16 @@ const prefixDir = project.appCode.includes('$') ? 'appCode' : project.appCode
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, `${process.cwd()}/env`)
-  console.log(`${chalk.grey(dayjs().format('HH:MM:DD'))} ${chalk.blue('[环境]')}${chalk.green(` 模式:${env.VITE_MODE} 布局:${env.VITE_LAYOUT}`)}`)
+  console.log(`${chalk.grey(dayjs().format('HH:MM:DD'))} ${chalk.blue('[环境]')}${chalk.green(` 模式:${mode} 布局:${env.VITE_LAYOUT}`)}`)
+
+  const nativePlugins = mode === "native" ? [VueDevTools(), child_process({
+    name: 'tg-local-server',
+    command: ['node', './vite/tg/app.js'],
+    watch: ['vite/tg/*'],
+  })] : [];
+
+  const productionPlugins = mode === 'production' ? [removeConsole()] : [];
+
   return {
     base: `/${prefixDir}/`,
     envDir: 'env',
@@ -54,20 +63,25 @@ export default defineConfig(({ mode }) => {
 
     plugins: [
       // Preview(),
+      // https://github.com/posva/unplugin-vue-router
+      VueRouter({
+        extensions: ['.vue'],
+        dts: false,
+      }),
 
       VueMacros({
         plugins: {
           vue: Vue({
             include: [/\.vue$/, /\.md$/],
-            reactivityTransform: true,
+            // reactivityTransform: true,
           }),
         },
       }),
       vueJsx(),
       // https://github.com/hannoeru/vite-plugin-pages
-      Pages({
-        extensions: ['vue'],
-      }),
+      // Pages({
+      //   extensions: ['vue'],
+      // }),
 
       // https://github.com/JohnCampionJr/vite-plugin-vue-layouts
       Layouts({
@@ -76,7 +90,7 @@ export default defineConfig(({ mode }) => {
 
       // https://github.com/antfu/unplugin-auto-import
       AutoImport({
-        imports: ['vue', 'vue-router', 'vue-i18n', 'vue/macros', '@vueuse/head', '@vueuse/core'],
+        imports: ['vue', 'vue-router', VueRouterAutoImports, 'vue-i18n', 'vue/macros', '@vueuse/head', '@vueuse/core'],
         dts: 'src/auto-imports.d.ts',
         dirs: ['src/stores'],
         vueTemplate: true,
@@ -100,22 +114,8 @@ export default defineConfig(({ mode }) => {
         fullInstall: true,
         include: [path.resolve(__dirname, 'locales/**')],
       }),
-
-      // https://github.com/antfu/vite-plugin-inspect
-      // Visit http://localhost:3333/__inspect/ to see the inspector
-      Inspect(),
-
-      // https://github.com/webfansplz/vite-plugin-vue-inspector
-      Inspector({
-        toggleButtonVisibility: 'never',
-      }),
-      mode === 'production' ? removeConsole() : null,
-      // tg(),
-      child_process({
-        name: 'tg-local-server',
-        command: ['node', './vite/tg/app.js'],
-        watch: ['vite/tg/*'],
-      }),
+      ...nativePlugins, // 本地插件
+      ...productionPlugins,
     ],
     build: {
       minify: mode !== 'development',
