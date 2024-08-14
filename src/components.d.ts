@@ -10,6 +10,7 @@ declare module 'vue' {
     InfiniteMenu: typeof import('./components/InfiniteMenu.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TabsContain: typeof import('./components/TabsContain.vue')['default']
     TheFooter: typeof import('./components/TheFooter.vue')['default']
   }
 }

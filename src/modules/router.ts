@@ -1,14 +1,15 @@
 import { setupLayouts } from 'virtual:generated-layouts'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { isEmpty } from 'lodash-es'
-import generatedRoutes from '~pages'
 import { type UserModule } from '~/types'
+import { routes } from 'vue-router/auto-routes'
+import { DataLoaderPlugin } from 'unplugin-vue-router/data-loaders'
 
 export const install: UserModule = ({ app }) => {
-  const routes = setupLayouts(generatedRoutes)
+  const routesLayout = setupLayouts(routes)
   const router = createRouter({
     history: createWebHashHistory(import.meta.env.BASE_URL),
-    routes,
+    routes: routesLayout,
   })
   router.beforeEach(async (to: any, from, next) => {
     const { token } = to.query
@@ -16,6 +17,7 @@ export const install: UserModule = ({ app }) => {
       localStorage.setItem('token', token)
     next()
   })
+  app.use(DataLoaderPlugin, { router })
   app.use(router)
   return router
 }
