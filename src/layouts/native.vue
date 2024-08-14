@@ -182,7 +182,7 @@ console.log(menuList);
             </div>
           </div>
         </Header>
-        <Content id="#app" p-5>
+        <Content id="#app">
           <iframe v-if="tgOpen && settings.form.show" class="iframe" :src="tgSrc" />
           <router-view v-else />
         </Content>

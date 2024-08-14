@@ -4,19 +4,15 @@ import logo from '~/assets/images/logo.png';
 import { defineBasicLoader } from 'unplugin-vue-router/data-loaders/basic';
 import { getMenuList } from '~/api/menu';
 
-const useUserData = defineBasicLoader('/', async (route) => {
+const useMenuListData = defineBasicLoader('/', async (route) => {
   return getMenuList();
 });
 
-const { data, isLoading } = useUserData();
+const { data, isLoading } = useMenuListData();
+const { user } = useUserStore();
 
 const menuList: any = data;
-
 const isCollapsed = ref(false);
-
-const user = ref({
-  orgCode: 'GGG'
-});
 </script>
 
 <template>
@@ -39,14 +35,15 @@ const user = ref({
           <Icon @click="isCollapsed = !isCollapsed" class="header_icon" type="md-menu" size="24"></Icon>
 
           <div class="message px-2">
-            <Avatar class="bg-green-500 flex justify-center items-center" style="background-color: rgb(34 197 94)" icon="ios-person" />
+            <Avatar class="flex justify-center items-center" style="background-color: rgb(34 197 94); width: 55px" icon="ios-person" />
             <div style="margin-left: 10px" class="flex flex-wrap">
-              <div class="userInfo">GCBZG / aaa</div>
-              <div class="userInfo">aaa / bbbb</div>
+              <div class="userInfo">{{ user.orgCode }} / {{ user.orgName }}</div>
+              <div class="userInfo">{{ user.userCode }} / {{ user.userName }}</div>
             </div>
           </div>
         </Header>
-        <Content id="#app" p-5>
+        <Content id="#app">
+          <TabsContain></TabsContain>
           <NoFrame></NoFrame>
         </Content>
       </Layout>
@@ -127,11 +124,12 @@ const user = ref({
       align-items: center;
       height: 64px;
       cursor: pointer;
+      width: 250px;
       .userInfo {
         width: 100%;
         height: 22px;
         line-height: 22px;
-        color: #fff;
+        color: #9fb2c5;
       }
       &:hover {
         background: hsla(0, 0%, 100%, 0.05);
