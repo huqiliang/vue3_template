@@ -13,17 +13,21 @@ const { data, isLoading } = useUserData();
 const menuList: any = data;
 
 const isCollapsed = ref(false);
+
+const user = ref({
+  orgCode: 'GGG'
+});
 </script>
 
 <template>
   <div class="layout">
     <Layout>
-      <Sider class="vh" hide-trigger collapsible :collapsed-width="78">
-        <div class="app_header" v-show="!isCollapsed">
+      <Sider class="vh" hide-trigger collapsible :collapsed-width="0" v-model="isCollapsed">
+        <div class="app_header">
           <div class="logo_box">
             <img class="app_logo" :src="logo" />
           </div>
-          <div class="system_name">测试系统</div>
+          <div class="system_name" v-show="!isCollapsed">测试系统</div>
         </div>
         <div class="flex justify-center p-2" v-if="isLoading">
           <Spin></Spin>
@@ -31,7 +35,17 @@ const isCollapsed = ref(false);
         <InfiniteMenu :menu-list="menuList" v-else></InfiniteMenu>
       </Sider>
       <Layout>
-        <Header class="layout-header-bar" style="padding: 0"> </Header>
+        <Header class="layout-header-bar flex items-center justify-between" style="padding: 0">
+          <Icon @click="isCollapsed = !isCollapsed" class="header_icon" type="md-menu" size="24"></Icon>
+
+          <div class="message px-2">
+            <Avatar class="bg-green-500 flex justify-center items-center" style="background-color: rgb(34 197 94)" icon="ios-person" />
+            <div style="margin-left: 10px" class="flex flex-wrap">
+              <div class="userInfo">GCBZG / aaa</div>
+              <div class="userInfo">aaa / bbbb</div>
+            </div>
+          </div>
+        </Header>
         <Content id="#app" p-5>
           <NoFrame></NoFrame>
         </Content>
@@ -75,7 +89,7 @@ const isCollapsed = ref(false);
   }
   .app_header {
     padding-left: 15px;
-    height: 62px;
+    height: 64px;
     cursor: pointer;
     display: flex;
     justify-content: flex-start;
@@ -100,6 +114,28 @@ const isCollapsed = ref(false);
     .system_name {
       color: #fff;
       font-size: 16px;
+    }
+  }
+  .layout-header-bar {
+    background: #00152c;
+    .header_icon {
+      margin: 0 20px;
+      color: #fff;
+    }
+    .message {
+      display: flex;
+      align-items: center;
+      height: 64px;
+      cursor: pointer;
+      .userInfo {
+        width: 100%;
+        height: 22px;
+        line-height: 22px;
+        color: #fff;
+      }
+      &:hover {
+        background: hsla(0, 0%, 100%, 0.05);
+      }
     }
   }
 }
