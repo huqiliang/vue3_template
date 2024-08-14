@@ -184,7 +184,7 @@ console.log(menuList);
         </Header>
         <Content id="#app">
           <iframe v-if="tgOpen && settings.form.show" class="iframe" :src="tgSrc" />
-          <router-view v-else />
+          <router-view v-else class="px-5 py-2" />
         </Content>
       </Layout>
     </Layout>
