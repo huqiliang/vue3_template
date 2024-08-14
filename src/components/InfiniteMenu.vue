@@ -1,4 +1,7 @@
 <script setup>
+import _ from 'lodash-es';
+import { findMenu } from '~/libs/menu';
+const { tabList } = useAppStore();
 const props = defineProps({
   menuList: Array
 });
@@ -12,10 +15,17 @@ const getTitle = (item) => {
 const getPath = (item) => {
   return layout === 'native' ? item.name : item.path;
 };
+
+const selectMenu = (path) => {
+  const menu = _.find(tabList, ['path', path]);
+  if (!menu) {
+    tabList.push(findMenu(menuList, 'path', path));
+  }
+};
 </script>
 
 <template>
-  <Menu width="auto" theme="dark" :active-name="route.path">
+  <Menu accordion width="auto" theme="dark" :active-name="route.path" @on-select="selectMenu">
     <template v-for="item in menuList" :key="item.path">
       <Submenu v-if="item.children && item.children.length > 0" :name="getPath(item)">
         <template #title>

@@ -1,11 +1,20 @@
 <script setup lang="tsx">
+import { findMenu } from '~/libs/menu';
 import NoFrame from './default.vue';
 import logo from '~/assets/images/logo.png';
 import { defineBasicLoader } from 'unplugin-vue-router/data-loaders/basic';
 import { getMenuList } from '~/api/menu';
+import _ from 'lodash-es';
+const { tabList } = useAppStore();
 
 const useMenuListData = defineBasicLoader('/', async (route) => {
-  return getMenuList();
+  const res = await getMenuList();
+  const menu = findMenu(res, 'path', route.path);
+  const tabMenu = findMenu(tabList, 'path', route.path);
+  if (menu && !tabMenu) {
+    tabList.push(menu);
+  }
+  return res;
 });
 
 const { data, isLoading } = useMenuListData();

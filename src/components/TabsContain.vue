@@ -1,20 +1,35 @@
 <template>
-  <div class="tabsContain">
+  <div class="tabsContain" v-if="tabList && tabList.length > 0">
     <Tabs class="newTab" ref="newTab" type="card" prefixCls="aa" :closable="tabList && tabList.length > 0" v-model="active" @on-click="handleTabActive" :before-remove="handleTabRemove">
-      <TabPane v-for="(item, index) in tabList" :label="item.title" :name="item.path" :key="index"></TabPane>
+      <TabPane v-for="(item, index) in tabList" :label="item.title" :name="item.path" :key="index"> </TabPane>
     </Tabs>
   </div>
 </template>
 <script setup>
-const tabList = ref([
-  {
-    title: 'aaa',
-    uuid: 'aaa'
+import _ from 'lodash-es';
+const { tabList } = useAppStore();
+const route = useRoute();
+const router = useRouter();
+console.log('tabList', route.path);
+
+const active = ref(route.path);
+const handleTabActive = (path) => {
+  router.push(path);
+};
+const handleTabRemove = (index) => {
+  const { path } = tabList[index];
+  tabList.splice(index, 1);
+
+  if (route.path === path) {
+    const last = _.get(_.findLast(tabList), 'path');
+    if (last) {
+      router.push(last);
+    }
   }
-]);
-const active = ref('');
-const handleTabActive = () => {};
-const handleTabRemove = () => {};
+};
+onBeforeRouteLeave((to, from) => {
+  active.value = to.path;
+});
 </script>
 
 <style lang="less">
