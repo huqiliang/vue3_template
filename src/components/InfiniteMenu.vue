@@ -27,7 +27,7 @@ const selectMenu = (path) => {
 <template>
   <Menu accordion width="auto" theme="dark" :active-name="route.path" @on-select="selectMenu">
     <template v-for="item in menuList" :key="item.path">
-      <Submenu v-if="item.children && item.children.length > 0" :name="getPath(item)">
+      <Submenu v-if="item.children && item.children.length > 0" :name="item.path">
         <template #title>
           {{ getTitle(item) }}
         </template>
