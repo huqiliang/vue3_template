@@ -15,25 +15,18 @@ const getTitle = (item) => {
 const getPath = (item) => {
   return layout === 'native' ? item.name : item.path;
 };
-
-const selectMenu = (path) => {
-  const menu = _.find(tabList, ['path', path]);
-  if (!menu) {
-    tabList.push(findMenu(menuList, 'path', path));
-  }
-};
 </script>
 
 <template>
-  <Menu accordion width="auto" theme="dark" :active-name="route.path" @on-select="selectMenu">
+  <Menu accordion width="auto" theme="dark" :active-name="route.path">
     <template v-for="item in menuList" :key="item.path">
-      <Submenu v-if="item.children && item.children.length > 0" :name="item.path">
+      <Submenu v-if="item.children && item.children.length > 0 && !item.hide" :name="item.path">
         <template #title>
           {{ getTitle(item) }}
         </template>
         <InfiniteMenu :menu-list="item.children" />
       </Submenu>
-      <menu-item v-else :name="item.path" :to="getPath(item)">
+      <menu-item v-else-if="!item.hide" :name="item.path" :to="getPath(item)">
         {{ getTitle(item) }}
       </menu-item>
     </template>

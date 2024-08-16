@@ -6,7 +6,13 @@ export const useAppStore: any = defineStore('app', {
     return {
       appCode: project.appCode,
       tabList: [],
+      menuList: []
     }
+  },
+  actions: {
+    setMenuList(menuList: any) {
+      this.menuList = menuList
+    },
   },
   persist: true,
 })
