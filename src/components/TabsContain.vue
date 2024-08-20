@@ -1,35 +1,41 @@
 <template>
   <div class="tabsContain" v-if="tabList && tabList.length > 0">
-    <Tabs class="newTab" ref="newTab" type="card" prefixCls="aa" :closable="tabList && tabList.length > 0" v-model="active" @on-click="handleTabActive" :before-remove="handleTabRemove">
-      <TabPane v-for="(item, index) in tabList" :label="item.title" :name="item.path" :key="index"> </TabPane>
+    <Tabs class="newTab" ref="newTab" type="card" prefixCls="aa" :closable="tabList && tabList.length > 1" v-model="tabId" @on-click="handleTabActive" :before-remove="handleTabRemove">
+      <TabPane v-for="(item, index) in tabList" :label="item.title" :name="item.id" :key="index"> </TabPane>
     </Tabs>
   </div>
 </template>
 <script setup>
 import _ from 'lodash-es';
-const { tabList } = useAppStore();
+import { findMenu } from '~/libs/menu';
+const { app } = useAppStore();
+const { menuList, tabList, activeMenu } = toRefs(app);
 const route = useRoute();
 const router = useRouter();
-console.log('tabList', route.path);
-
-const active = ref(route.path);
-const handleTabActive = (path) => {
-  router.push(path);
+const tabId = computed(() => {
+  return activeMenu.value.id;
+});
+const handleTabActive = (id) => {
+  const menu = _.find(tabList.value, ['id', id]);
+  if (menu) {
+    const { path, query } = menu;
+    router.push({
+      path,
+      query
+    });
+  }
 };
 const handleTabRemove = (index) => {
-  const { path } = tabList[index];
-  tabList.splice(index, 1);
+  const { path } = tabList.value[index];
+  tabList.value.splice(index, 1);
 
   if (route.path === path) {
-    const last = _.get(_.findLast(tabList), 'path');
+    const last = _.get(_.findLast(tabList.value), 'path');
     if (last) {
       router.push(last);
     }
   }
 };
-onBeforeRouteLeave((to, from) => {
-  active.value = to.path;
-});
 </script>
 
 <style lang="less">

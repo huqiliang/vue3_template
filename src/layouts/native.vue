@@ -144,15 +144,13 @@ async function addNewHandle() {
   }
 }
 const menuList: any = routes;
-
-console.log(menuList);
 </script>
 
 <template>
   <div class="layout">
     <Layout>
       <Sider class="vh" hide-trigger collapsible :collapsed-width="78">
-        <InfiniteMenu :menu-list="menuList"></InfiniteMenu>
+        <Menu accordion width="auto" theme="dark"> <InfiniteMenu :menu-list="menuList"></InfiniteMenu></Menu>
         <div
           mt-2
           border-dashed

@@ -1,22 +1,24 @@
-<script setup lang="tsx">
+<script setup>
 // import { findMenu } from '~/libs/menu';
 import NoFrame from './default.vue';
 import logo from '~/assets/images/logo.png';
 import { defineBasicLoader } from 'unplugin-vue-router/data-loaders/basic';
 import { getMenuList } from '~/api/menu';
 import _ from 'lodash-es';
-const { setMenuList } = useAppStore();
+const { setMenuList, app } = useAppStore();
 
+const { activeMenu } = toRefs(app);
+const route = useRoute();
 const useMenuListData = defineBasicLoader('/', async (route) => {
   const res = await getMenuList();
-  setMenuList(res);
+  setMenuList(res, route);
   return res;
 });
 
 const { data, isLoading } = useMenuListData();
 const { user } = useUserStore();
 
-const menuList: any = data;
+const menuList = data;
 const isCollapsed = ref(false);
 </script>
 
@@ -33,7 +35,7 @@ const isCollapsed = ref(false);
         <div class="flex justify-center p-2" v-if="isLoading">
           <Spin></Spin>
         </div>
-        <InfiniteMenu :menu-list="menuList" v-else></InfiniteMenu>
+        <Menu v-else accordion width="auto" theme="dark" :active-name="activeMenu.id" :open-names="activeMenu.parentId"> <InfiniteMenu :menu-list="menuList"></InfiniteMenu></Menu>
       </Sider>
       <Layout>
         <Header class="layout-header-bar flex items-center justify-between" style="padding: 0">

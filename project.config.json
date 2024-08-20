@@ -1,7 +1,7 @@
 {
   "appCode": "${appCode}",
   "appName": "订单系统",
-  "childPort": 8989,
+  "childPort": 61756,
   "tg": {
     "open": true,
     "server": "http://192.168.0.85:8989",

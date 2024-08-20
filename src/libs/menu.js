@@ -9,3 +9,15 @@ export function findMenu(menus, key, value) {
   });
   return o;
 }
+
+export function setTabActive(to) {
+  if (import.meta.env.MODE === 'frame') {
+    const { setActiveMenu, app } = useAppStore();
+    const { menuList } = toRefs(app);
+    // 如果在 frame 模式下
+    const menu = findMenu(menuList.value, 'path', to.path);
+    if (menu) {
+      setActiveMenu({ ...menu, query: to.query });
+    }
+  }
+}
