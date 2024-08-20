@@ -30,9 +30,13 @@ const handleTabRemove = (index) => {
   tabList.value.splice(index, 1);
 
   if (route.path === path) {
-    const last = _.get(_.findLast(tabList.value), 'path');
+    const last = _.findLast(tabList.value);
     if (last) {
-      router.push(last);
+      const { path, query } = last;
+      router.push({
+        path,
+        query
+      });
     }
   }
 };
