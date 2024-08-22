@@ -11,7 +11,7 @@ export function findMenu(menus, key, value) {
 }
 
 export function setTabActive(to) {
-  if (import.meta.env.MODE === 'frame') {
+  if (import.meta.env.VITE_LAYOUT === 'frame') {
     const { setActiveMenu, app } = useAppStore();
     const { menuList } = toRefs(app);
     // 如果在 frame 模式下
