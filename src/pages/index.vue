@@ -1,11 +1,14 @@
 <script setup lang="ts">
 defineOptions({
   name: 'IndexPage'
-})
+});
 </script>
 
 <template>
-  <div>首页 -- dashbord</div>
+  <div>
+    <div>首页 -- dashbord</div>
+    <pro-footer></pro-footer>
+  </div>
 </template>
 
 <route lang="yaml">

@@ -149,7 +149,7 @@ const menuList: any = routes;
 <template>
   <div class="layout">
     <Layout>
-      <Sider class="vh" hide-trigger collapsible :collapsed-width="78">
+      <Sider class="slider" hide-trigger collapsible :collapsed-width="78">
         <Menu accordion width="auto" theme="dark"> <InfiniteMenu :menu-list="menuList"></InfiniteMenu></Menu>
         <div
           mt-2
@@ -230,8 +230,9 @@ const menuList: any = routes;
   }
 }
 
-.vh {
+.slider {
   min-height: 100vh;
+  z-index: 6000;
 }
 
 .layout-header-bar {

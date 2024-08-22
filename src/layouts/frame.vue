@@ -25,7 +25,7 @@ const isCollapsed = ref(false);
 <template>
   <div class="layout">
     <Layout>
-      <Sider class="vh" hide-trigger collapsible :collapsed-width="0" v-model="isCollapsed">
+      <Sider class="vh slider" hide-trigger collapsible :collapsed-width="0" v-model="isCollapsed">
         <div class="app_header">
           <div class="logo_box">
             <img class="app_logo" :src="logo" />
@@ -87,9 +87,9 @@ const isCollapsed = ref(false);
   position: relative;
   min-height: 100vh;
   overflow: hidden;
-
-  .vh {
+  .slider {
     min-height: 100vh;
+    z-index: 6000;
   }
   .app_header {
     padding-left: 15px;
