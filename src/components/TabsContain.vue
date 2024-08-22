@@ -1,7 +1,22 @@
 <template>
   <div class="tabsContain" v-if="tabList && tabList.length > 0">
-    <Tabs class="newTab" ref="newTab" type="card" prefixCls="aa" :closable="tabList && tabList.length > 1" v-model="tabId" @on-click="handleTabActive" :before-remove="handleTabRemove">
-      <TabPane v-for="(item, index) in tabList" :label="item.title" :name="item.id" :key="index"> </TabPane>
+    <Tabs
+      class="newTab"
+      ref="newTab"
+      type="card"
+      prefixCls="aa"
+      :closable="tabList && tabList.length > 1"
+      :modelValue="tabId"
+      @on-click="handleTabActive"
+      :before-remove="handleTabRemove"
+    >
+      <TabPane
+        v-for="(item, index) in tabList"
+        :label="item.title"
+        :name="item.id"
+        :key="index"
+      >
+      </TabPane>
     </Tabs>
   </div>
 </template>
