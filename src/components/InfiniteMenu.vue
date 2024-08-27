@@ -34,14 +34,37 @@ const getPath = (item) => {
 
 <template>
   <div v-for="item in menuList" :key="item.id">
-    <Submenu v-if="item.children && item.children.length > 0 && !item.hide" :name="item.id || item.path">
+    <Submenu
+      v-if="item.children && item.children.length > 0 && !item.hide"
+      :name="item.id || item.path"
+    >
       <template #title>
-        {{ getTitle(item) }}
+        <Tooltip
+          max-width="200"
+          :content="getTitle(item)"
+          transfer
+          v-if="getTitle(item) && getTitle(item).length > 10"
+        >
+          {{ getTitle(item).substr(0, 10) }}...
+        </Tooltip>
+        <span v-else>{{ getTitle(item) }}</span>
       </template>
       <InfiniteMenu :menu-list="item.children" />
     </Submenu>
-    <menu-item v-else-if="!item.hide" :name="item.id || item.path" :to="getPath(item)">
-      {{ getTitle(item) }}
+    <menu-item
+      v-else-if="!item.hide"
+      :name="item.id || item.path"
+      :to="getPath(item)"
+    >
+      <Tooltip
+        max-width="200"
+        :content="getTitle(item)"
+        transfer
+        v-if="getTitle(item) && getTitle(item).length > 10"
+      >
+        {{ getTitle(item).substr(0, 10) }}...
+      </Tooltip>
+      <span v-else>{{ getTitle(item) }}</span>
     </menu-item>
   </div>
 </template>

@@ -25,7 +25,13 @@ const isCollapsed = ref(false);
 <template>
   <div class="layout">
     <Layout>
-      <Sider class="vh slider" hide-trigger collapsible :collapsed-width="0" v-model="isCollapsed">
+      <Sider
+        class="vh slider"
+        hide-trigger
+        collapsible
+        :collapsed-width="0"
+        v-model="isCollapsed"
+      >
         <div class="app_header">
           <div class="logo_box">
             <img class="app_logo" :src="logo" />
@@ -35,17 +41,42 @@ const isCollapsed = ref(false);
         <div class="flex justify-center p-2" v-if="isLoading">
           <Spin></Spin>
         </div>
-        <Menu v-else accordion width="auto" theme="dark" :active-name="activeMenu.id" :open-names="activeMenu.parentId"> <InfiniteMenu :menu-list="menuList"></InfiniteMenu></Menu>
+        <Menu
+          v-else
+          accordion
+          width="auto"
+          theme="dark"
+          :active-name="activeMenu.id"
+          :open-names="activeMenu.parentId"
+        >
+          <InfiniteMenu :menu-list="menuList"></InfiniteMenu
+        ></Menu>
       </Sider>
       <Layout>
-        <Header class="layout-header-bar flex items-center justify-between" style="padding: 0">
-          <Icon @click="isCollapsed = !isCollapsed" class="header_icon" type="md-menu" size="24"></Icon>
+        <Header
+          class="layout-header-bar flex items-center justify-between"
+          style="padding: 0"
+        >
+          <Icon
+            @click="isCollapsed = !isCollapsed"
+            class="header_icon"
+            type="md-menu"
+            size="24"
+          ></Icon>
 
           <div class="message px-2">
-            <Avatar class="flex justify-center items-center" style="background-color: rgb(34 197 94); width: 55px" icon="ios-person" />
+            <Avatar
+              class="flex justify-center items-center"
+              style="background-color: rgb(34 197 94); width: 55px"
+              icon="ios-person"
+            />
             <div style="margin-left: 10px" class="flex flex-wrap">
-              <div class="userInfo">{{ user.orgCode }} / {{ user.orgName }}</div>
-              <div class="userInfo">{{ user.userCode }} / {{ user.userName }}</div>
+              <div class="userInfo">
+                {{ user.orgCode }} / {{ user.orgName }}
+              </div>
+              <div class="userInfo">
+                {{ user.userCode }} / {{ user.userName }}
+              </div>
             </div>
           </div>
         </Header>
@@ -75,8 +106,14 @@ const isCollapsed = ref(false);
   :deep(.ivu-layout-sider) {
     background: #00152c;
   }
-  :deep(.ivu-menu-dark.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu)),
-  :deep(.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title-active:not(.ivu-menu-submenu)) {
+  :deep(
+      .ivu-menu-dark.ivu-menu-vertical
+        .ivu-menu-item-active:not(.ivu-menu-submenu)
+    ),
+  :deep(
+      .ivu-menu-dark.ivu-menu-vertical
+        .ivu-menu-submenu-title-active:not(.ivu-menu-submenu)
+    ) {
     background: #2d8cf0 !important;
     color: #fff;
   }
@@ -89,7 +126,7 @@ const isCollapsed = ref(false);
   overflow: hidden;
   .slider {
     min-height: 100vh;
-    z-index: 6000;
+    z-index: 999;
   }
   .app_header {
     padding-left: 15px;
