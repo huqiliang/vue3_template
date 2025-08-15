@@ -16,13 +16,14 @@ import removeConsole from 'vite-plugin-remove-console'
 import { child_process } from 'vite-plugin-child-process'
 import VueRouter from 'unplugin-vue-router/vite'
 import { VueRouterAutoImports } from 'unplugin-vue-router'
+import vitePluginsAutoI18n from "vite-gc-i18n-plugin";
 import chalk from 'chalk'
 import dayjs from 'dayjs'
 import _ from "lodash-es"
 
 import project from './project.config.json'
 
-const prefixDir = project.appCode.includes('$') ? 'appCode' : project.appCode
+const appCode = project.appCode.includes('$') ? 'appCode' : project.appCode
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, `${process.cwd()}/env`)
@@ -37,7 +38,7 @@ export default defineConfig(({ mode }) => {
   const productionPlugins = mode === 'production' ? [removeConsole()] : [];
 
   return {
-    base: `/${prefixDir}/`,
+    base: `/${appCode}/`,
     envDir: 'env',
     server: {
       proxy: {
@@ -113,11 +114,15 @@ export default defineConfig(({ mode }) => {
       }),
       ...nativePlugins, // 本地插件
       ...productionPlugins,
+      vitePluginsAutoI18n({
+        appCode, // 第三步中生成的语言由此 appCode+GREENCLOUD 决定，应用代码为UC应用code,如果不是uc应用，请联系管理
+        excludedPath: ["node_modules"] //排除不需要扫描的路径,如果启动保存，特殊情况配置
+      })
     ],
     build: {
       minify: mode !== 'development',
       sourcemap: mode === 'development',
-      outDir: `dist/${prefixDir}`,
+      outDir: `dist/${appCode}`,
     },
     // https://github.com/vitest-dev/vitest
     test: {

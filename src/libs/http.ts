@@ -36,21 +36,25 @@ axios.interceptors.request.use(
 )
 axios.interceptors.response.use(
   (res: any) => {
-    const { nomsg } = res.config.headers
-    // 接口状态在此修改
-    if (res.data.result && res.data.result !== 0) {
-      if (!nomsg) {
-        Message.error({
-          // 接口错误路径
-          content: res.data.msg || '未知错误',
-        })
+    try {
+
+
+      const { nomsg } = res.config.headers
+      // 接口状态在此修改
+      if (res.data.result && res.data.result !== 0) {
+        if (!nomsg) {
+          Message.error({
+            // 接口错误路径
+            content: res.data.msg || '未知错误',
+          })
+        }
       }
-    }
-    else {
-      // pro_iview提醒判断 不可删除 也可以作为接口判断提示
-      res.data.success = true
-    }
-    return res.data
+      else {
+        // pro_iview提醒判断 不可删除 也可以作为接口判断提示
+        res.success = true
+      }
+    } catch (error) { }
+    return res
   },
   (err) => {
     const { nomsg } = err.config.headers

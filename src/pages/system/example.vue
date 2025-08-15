@@ -316,9 +316,9 @@ export default {
         ],
         request: '/mock/106/api/table',
         map: {
-          dataPath: 'data',
-          totalPath: 'totalRows',
-          message: 'message'
+          dataPath: 'data.data',
+          totalPath: 'data.totalRows',
+          message: 'data.message'
         },
         submitForm: '/mock/106/api/test'
       };
