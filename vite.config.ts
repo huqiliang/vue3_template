@@ -65,6 +65,25 @@ export default defineConfig(({ mode }) => {
       VueRouter({
         extensions: ['.vue'],
         dts: false,
+        // 自动加入name
+        // 自定义路由名称生成规则
+        getRouteName: (node) => {
+          // 从节点路径中提取页面名称（忽略布局目录）
+          const pathSegments = node.path.split('/').filter(Boolean)
+          // 排除布局相关的路径片段（如 'layouts'）
+          const pageSegments = pathSegments.filter(seg => !seg.includes('layout'))
+
+          // 如果是根路径，返回 'home'
+          if (pageSegments.length === 0) {
+            return 'home'
+          }
+
+          // 生成 PascalCase 名称
+          const name = pageSegments.map(seg => seg.charAt(0).toUpperCase() + seg.slice(1)).join('')
+
+          // 确保名称不为空
+          return name || 'home'
+        }
       }),
 
       VueMacros({
@@ -116,7 +135,7 @@ export default defineConfig(({ mode }) => {
       ...productionPlugins,
       vitePluginsAutoI18n({
         appCode, // 第三步中生成的语言由此 appCode+GREENCLOUD 决定，应用代码为UC应用code,如果不是uc应用，请联系管理
-        excludedPath: ["node_modules"] //排除不需要扫描的路径,如果启动保存，特殊情况配置
+        excludedPath: ["node_modules", "README"] //排除不需要扫描的路径,如果启动保存，特殊情况配置
       })
     ],
     build: {

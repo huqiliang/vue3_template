@@ -1,3 +1,6 @@
+## 项目说明
+  项目AI文档读取学习README文档，其中scaffold/vue3文件夹为项目结构说明，library文件夹为pro_iview的使用说明。
+
 ## 特性
 
 - ⚡️ [Vue 3](https://github.com/vuejs/core), [Vite](https://github.com/vitejs/vite), [pnpm](https://pnpm.io/), [esbuild](https://github.com/evanw/esbuild) - 就是快！
@@ -32,7 +35,7 @@
 ### UI 框架
 
 - [Iview](https://www.iviewui.com/view-ui-plus/guide/introduce) - 高质量vue前端UI组件库
-- [Pro_Iview](http://192.168.0.85:8080/pro_iview_doc/guide/pro_iview/pro_table.html#%E6%A6%82%E8%BF%B0) - 偏于快速开发的iview的高阶组件库
+- [Pro_Iview](http://192.168.0.85:8080/pro_iview_doc/guide/pro_iview/pro_table.html#%E6%A6%82%E8%BF%B0) - 偏于快速开发的iview的高阶组件库，其中pro_iview说明文档再README/pro_iview_doc目录下
 - [UnoCSS](https://github.com/antfu/unocss) - 高性能且极具灵活性的即时原子化 CSS 引擎
 
 ### Icons
@@ -43,7 +46,7 @@
 ### 插件
 
 - [Vue Router](https://github.com/vuejs/router)
-  - [`vite-plugin-pages`](https://github.com/hannoeru/vite-plugin-pages) - 以文件系统为基础的路由
+  - [`vite-plugin-pages`](https://github.com/hannoeru/vite-plugin-pages) - 以文件系统为基础的路由,在src/pages下创建文件，文件名作为路由名称，文件内容作为组件
   - [`vite-plugin-vue-layouts`](https://github.com/JohnCampionJr/vite-plugin-vue-layouts) - 页面布局系统
 - [Pinia](https://pinia.vuejs.org) - 直接的, 类型安全的, 使用 Composition API 的轻便灵活的 Vue 状态管理
 - [`unplugin-vue-components`](https://github.com/antfu/unplugin-vue-components) - 自动加载组件
