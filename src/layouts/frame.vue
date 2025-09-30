@@ -20,10 +20,18 @@ const { user } = useUserStore();
 
 const menuList = data;
 const isCollapsed = ref(false);
+
+// 检查当前路由是否需要跳过框架布局
+const shouldSkipFrame = computed(() => {
+  return route.meta?.layout === 'default' || route.meta?.skipFrame;
+});
 </script>
 
 <template>
-  <div class="layout">
+  <div v-if="shouldSkipFrame" class="skip-frame">
+    <RouterView />
+  </div>
+  <div v-else class="layout">
     <Layout>
       <Sider
         class="vh slider"
@@ -90,6 +98,12 @@ const isCollapsed = ref(false);
 </template>
 
 <style scoped lang="less">
+.skip-frame {
+  width: 100%;
+  min-height: 100vh;
+  padding: 20px;
+}
+
 .layout {
   :deep(.ivu-menu-vertical .ivu-menu-item),
   :deep(.ivu-menu-vertical .ivu-menu-submenu-title) {
@@ -107,13 +121,13 @@ const isCollapsed = ref(false);
     background: #00152c;
   }
   :deep(
-      .ivu-menu-dark.ivu-menu-vertical
-        .ivu-menu-item-active:not(.ivu-menu-submenu)
-    ),
+    .ivu-menu-dark.ivu-menu-vertical
+      .ivu-menu-item-active:not(.ivu-menu-submenu)
+  ),
   :deep(
-      .ivu-menu-dark.ivu-menu-vertical
-        .ivu-menu-submenu-title-active:not(.ivu-menu-submenu)
-    ) {
+    .ivu-menu-dark.ivu-menu-vertical
+      .ivu-menu-submenu-title-active:not(.ivu-menu-submenu)
+  ) {
     background: #2d8cf0 !important;
     color: #fff;
   }
