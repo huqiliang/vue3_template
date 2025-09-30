@@ -3,7 +3,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import { isEmpty } from 'lodash-es'
 import { type UserModule } from '~/types'
 import { routes } from 'vue-router/auto-routes'
-// import { DataLoaderPlugin } from 'unplugin-vue-router/data-loaders'
+import { DataLoaderPlugin } from 'unplugin-vue-router/data-loaders'
 import { setTabActive } from '~/libs/menu'
 export const install: UserModule = ({ app }) => {
   const routesLayout = setupLayouts(routes)
@@ -21,7 +21,7 @@ export const install: UserModule = ({ app }) => {
   router.afterEach((to) => {
     setTabActive(to);
   })
-  // app.use(DataLoaderPlugin, { router })
+  app.use(DataLoaderPlugin, { router })
   app.use(router)
   return router
 }
