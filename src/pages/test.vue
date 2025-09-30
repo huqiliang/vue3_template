@@ -1,22 +1,23 @@
 <script setup lang="ts">
 const router = useRouter();
+
 defineOptions({
-  name: 'IndexPage'
+  name: 'test'
 });
-const goToNoFrame = () => {
-  router.push('/test');
+const goToIndex = () => {
+  router.push('/');
 };
 </script>
 
 <template>
   <div>
-    <div>首页 -- dashbord</div>
-    <Button @click="goToNoFrame">跳转到无框</Button>
+    <Button @click="goToIndex">跳转到首页</Button>
     <pro-footer></pro-footer>
   </div>
 </template>
 
 <route lang="yaml">
 meta:
-  title: 首页
+  title: 测试
+  layout: default
 </route>

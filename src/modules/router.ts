@@ -12,7 +12,7 @@ export const install: UserModule = ({ app }) => {
     routes: routesLayout,
   })
   router.beforeEach(async (to: any, from, next) => {
-
+    document.title = to.meta.title || '平台'
     const { token } = to.query;
     if (!isEmpty(token))
       localStorage.setItem('token', token)
