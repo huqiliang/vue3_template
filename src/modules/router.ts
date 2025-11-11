@@ -2,9 +2,13 @@ import { setupLayouts } from 'virtual:generated-layouts'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { isEmpty } from 'lodash-es'
 import { type UserModule } from '~/types'
-import { routes } from 'vue-router/auto-routes'
-import { DataLoaderPlugin } from 'unplugin-vue-router/data-loaders'
+// import { routes } from 'vue-router/auto-routes'
+// import { DataLoaderPlugin } from 'unplugin-vue-router/data-loaders'
 import { setTabActive } from '~/libs/menu'
+
+// 从 vite-plugin-pages 导入生成的路由
+import routes from '~pages'
+
 export const install: UserModule = ({ app }) => {
   const routesLayout = setupLayouts(routes)
   const router = createRouter({
@@ -21,7 +25,7 @@ export const install: UserModule = ({ app }) => {
   router.afterEach((to) => {
     setTabActive(to);
   })
-  app.use(DataLoaderPlugin, { router })
+  // app.use(DataLoaderPlugin, { router })
   app.use(router)
   return router
 }

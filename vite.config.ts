@@ -3,7 +3,7 @@ import { defineConfig, loadEnv } from 'vite'
 
 // import Preview from 'vite-plugin-vue-component-preview'
 import Vue from '@vitejs/plugin-vue'
-// import Pages from 'vite-plugin-pages'
+import Pages from 'vite-plugin-pages'
 import Layouts from 'vite-plugin-vue-layouts'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -14,8 +14,8 @@ import VueMacros from 'unplugin-vue-macros/vite'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import removeConsole from 'vite-plugin-remove-console'
 import { child_process } from 'vite-plugin-child-process'
-import VueRouter from 'unplugin-vue-router/vite'
-import { VueRouterAutoImports } from 'unplugin-vue-router'
+// import VueRouter from 'unplugin-vue-router/vite'
+// import { VueRouterAutoImports } from 'unplugin-vue-router'
 import vitePluginsAutoI18n from "vite-gc-i18n-plugin";
 import chalk from 'chalk'
 import dayjs from 'dayjs'
@@ -62,29 +62,29 @@ export default defineConfig(({ mode }) => {
     plugins: [
       // Preview(),
       // https://github.com/posva/unplugin-vue-router
-      VueRouter({
-        extensions: ['.vue'],
-        dts: false,
-        // 自动加入name
-        // 自定义路由名称生成规则
-        getRouteName: (node) => {
-          // 从节点路径中提取页面名称（忽略布局目录）
-          const pathSegments = node.path.split('/').filter(Boolean)
-          // 排除布局相关的路径片段（如 'layouts'）
-          const pageSegments = pathSegments.filter(seg => !seg.includes('layout'))
-
-          // 如果是根路径，返回 'home'
-          if (pageSegments.length === 0) {
-            return 'home'
-          }
-
-          // 生成 PascalCase 名称
-          const name = pageSegments.map(seg => seg.charAt(0).toUpperCase() + seg.slice(1)).join('')
-
-          // 确保名称不为空
-          return name || 'home'
-        }
-      }),
+      // VueRouter({
+      //   extensions: ['.vue'],
+      //   dts: false,
+      //   // 自动加入name
+      //   // 自定义路由名称生成规则
+      //   getRouteName: (node) => {
+      //     // 从节点路径中提取页面名称（忽略布局目录）
+      //     const pathSegments = node.path.split('/').filter(Boolean)
+      //     // 排除布局相关的路径片段（如 'layouts'）
+      //     const pageSegments = pathSegments.filter(seg => !seg.includes('layout'))
+      //
+      //     // 如果是根路径，返回 'home'
+      //     if (pageSegments.length === 0) {
+      //       return 'home'
+      //     }
+      //
+      //     // 生成 PascalCase 名称
+      //     const name = pageSegments.map(seg => seg.charAt(0).toUpperCase() + seg.slice(1)).join('')
+      //
+      //     // 确保名称不为空
+      //     return name || 'home'
+      //   }
+      // }),
 
       VueMacros({
         plugins: {
@@ -96,9 +96,10 @@ export default defineConfig(({ mode }) => {
       }),
       vueJsx(),
       // https://github.com/hannoeru/vite-plugin-pages
-      // Pages({
-      //   extensions: ['vue'],
-      // }),
+      Pages({
+        extensions: ['vue'],
+        routeNameSeparator: '-'
+      }),
 
       // https://github.com/JohnCampionJr/vite-plugin-vue-layouts
       Layouts({
@@ -107,7 +108,8 @@ export default defineConfig(({ mode }) => {
 
       // https://github.com/antfu/unplugin-auto-import
       AutoImport({
-        imports: ['vue', 'vue-router', VueRouterAutoImports, 'vue-i18n', 'vue/macros', '@vueuse/head', '@vueuse/core'],
+        // imports: ['vue', 'vue-router', VueRouterAutoImports, 'vue-i18n', 'vue/macros', '@vueuse/head', '@vueuse/core'],
+        imports: ['vue', 'vue-router', 'vue-i18n', 'vue/macros', '@vueuse/head', '@vueuse/core'],
         dts: 'src/auto-imports.d.ts',
         dirs: ['src/stores'],
         vueTemplate: true,
