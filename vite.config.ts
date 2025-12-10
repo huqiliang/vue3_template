@@ -41,6 +41,7 @@ export default defineConfig(({ mode }) => {
     base: `/${appCode}/`,
     envDir: 'env',
     server: {
+      host: true, // 支持局域网访问
       proxy: {
         '/api': {
           target: env.VITE_BASE_URL,
